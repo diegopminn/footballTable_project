@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block block_meta %}
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% endblock %}
+        <title>{% block title %}Soccer &mdash; Er fubolin{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block block_stylesheets %}
+            {% include 'partials/_base_head_stylesheets.html.twig' %}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+            <!-- Header -->
+            <header class="site-navbar py-4" role="banner">
+
+                <div class="container">
+                    <div class="d-flex align-items-center">
+                        <div class="site-logo">
+                            <a href="{{ path('app_main') }}">
+                                <img src="{{ asset('bundles/app/images/main-logo.png') }}" alt="Logo">
+                            </a>
+                        </div>
+                        <div class="ml-auto">
+                            <nav class="site-navigation position-relative text-right" role="navigation">
+                                <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                                    <li class="{{ app.request.get('_route') == 'app_main' ? 'active' : '' }}"><a href="{{ path('app_main') }}" class="nav-link">Inicio</a></li>
+                                    <li class="{{ app.request.get('_route') == 'app_games' ? 'active' : '' }}"><a href="{{ path('app_games') }}" class="nav-link">Partidos</a></li>
+                                    <li class="{{ app.request.get('_route') == 'app_players' ? 'active' : '' }}"><a href="{{ path('app_players') }}" class="nav-link">Jugadores</a></li>
+                                    <li><a href="#" class="nav-link">Creador</a></li>
+                                </ul>
+                            </nav>
+
+                            <a href="#"
+                               class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right text-white"><span
+                                        class="icon-menu h3 text-white"></span></a>
+                        </div>
+                    </div>
+                </div>
+
+            </header>
+            <!-- Header -->
+        {% endblock %}
+        {% block footer %}
+            <footer class="footer-section">
+                <div class="container">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-6">
+                                <div class="footerWidget">
+                                    <img src="{{ asset('bundles/app/images/main-logo.png') }}" alt="Innatial Developers"
+                                         id="footerLogo">
+                                    <p>
+                                        <a href="http://www.innatial.com"
+                                           title="Innatial Developers, experiencia y talento a tu servicio">Somos Inatial Developers</a> un equipo reducido de profesionales enfocado en la
+                                        concentración de talento y la búsqueda
+                                        de soluciones expertas a proyectos empresariales.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-offset-1 col-md-3 col-sm-6">
+                                <div class="footerWidget">
+
+                                    <h3>Innatial Developers</h3>
+                                    <address>
+                                        <p>
+                                            <i class="icon-location"></i>&nbsp;C/ Príncipe 35, Piso 3, Vigo
+                                            <br> <i class="icon-mail-alt"></i>&nbsp;<a
+                                                    href="#">info@innatial.com</a>
+                                        </p>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <div class=" pt-5">
+                                <p>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    Copyright &copy;
+                                    <script>
+                                        document.write(new Date().getFullYear());
+                                    </script> All rights reserved 
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </footer>
+        {% endblock %}
+        {% block block_javascripts %}
+            {% include 'partials/_base_head_scripts.html.twig' %}
+        {% endblock %}
+    </body>
+</html>

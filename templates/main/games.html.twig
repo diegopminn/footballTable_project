@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+{% block block_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/playerstable.css') }}">
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+
+    <div class="container"></div>
+
+    <div>
+        <table class="container">
+            <thead>
+            <tr>
+                <th><h1>Id</h1></th>
+                <th><h1>Delatero Azul</h1></th>
+                <th><h1>Defensa Azul</h1></th>
+                <th><h1>Delantero Rojo</h1></th>
+                <th><h1>Defensa Rojo</h1></th>
+                <th><h1>Resultado</h1></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for game in lastsGame %}
+                {% if game.blueGols == 7 or game.redGols == 7 %}
+                    <tr style=" background-color: #565964">
+                        <td>{{ game.id }}</td>
+                        <td>{{ game.blueForward }}</td>
+                        <td>{{ game.blueDefense }}</td>
+                        <td>{{ game.redForward }}</td>
+                        <td>{{ game.redDefense }}</td>
+                        <td>{{ game.blueGols }}-{{ game.redGols }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ game.id }}</td>
+                        <td>{{ game.blueForward }}</td>
+                        <td>{{ game.blueDefense }}</td>
+                        <td>{{ game.redForward }}</td>
+                        <td>{{ game.redDefense }}</td>
+                        <td>{{ game.blueGols }}-{{ game.redGols }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}
+

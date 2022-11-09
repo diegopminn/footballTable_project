@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block block_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/playerstable.css') }}">
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="container"></div>
+
+    <div>
+        <table class="container ">
+            <thead>
+            <tr class="row m-auto">
+                <th class="col"><h1>Players</h1></th>
+                <th class="col"><h1>Victorias</h1></th>
+                <th class="col"><h1>Derrotas</h1></th>
+                <th class="col"><h1>Part.totales</h1></th>
+                <th class="col"><h1>KDA</h1></th>
+                <th class="col"><h1>Bajaditas</h1></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, player in totalgames %}
+                <tr class="row m-auto">
+                    <td class="col"><strong class="text-white">{{ key }}</strong></td>
+                    <td class="col">{{ player.Victorias }}</td>
+                    <td class="col">{{ player.Derrotas }}</td>
+                    {% set totalGames = player.Victorias + player.Derrotas %}
+                    <td class="col">{{ totalGames }}</td>
+                    {% set division = (player.Victorias and totalGames ? player.Victorias / totalGames : 0) %}
+                    <td class="col"> {{ division | slice (0, 4) }} </td>
+                    <td class="col"> {{ player.Bajaditas }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}
+
