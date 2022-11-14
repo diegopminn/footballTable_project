@@ -46,7 +46,7 @@ class PlayerrRepository extends ServiceEntityRepository
     public function findAllPlayers(): array
     {
         return $this->createQueryBuilder('playerr')
-            ->select('playerr.id', 'playerr.Name')
+            ->select('playerr.id', 'playerr.name')
             ->getQuery()
             ->getResult();
 

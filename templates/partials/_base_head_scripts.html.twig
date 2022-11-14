@@ -17,3 +17,7 @@
 <script src="{{ asset('bundles/app/js/main.js') }}"></script>
 <script src="{{ asset('bundles/app/js/sweetalert2/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('bundles/app/js/index.js') }}"></script>
+<script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+<script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
+<script src="{{ url('bazinga_jstranslation_js', { 'locales': app.request.locale|split('_')[0] } ) }}"></script>

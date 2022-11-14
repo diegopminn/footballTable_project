@@ -78,7 +78,7 @@
                                 <h3>New Game</h3>
                             </div>
                             <!-- FORMULARIO GAME -->
-                            {{ form_start(formulario) }}
+                            {{ form_start(formulario, {'attr': {'id': 'form_game'}}) }}
                             <div class="widget-body mb-3">
                                 <div class="widget-vs">
                                     <div class="d-flex align-items-center justify-content-around justify-content-between w-100">
@@ -86,6 +86,10 @@
                                             <div class="team-1 text-center col-md-5">
                                                 <div class=" border-0 mb-1 px-4 py-4 rounded shadow m-auto ">
                                                     {{ form_widget(formulario.blueForward, {attr:{'class' : 'btn btn-outline-dark w-75'}}) }}
+                                                </div>
+                                                <br>
+                                                <div class=" border-0 mb-1 m-auto ">
+                                                        <button  id="rotate" class="btn btn-outline-dark w-25"><i class="fa-solid fa-arrows-rotate"></i></button>
                                                 </div>
                                                 <br>
                                                 <div class=" border-0 mb-1 px-4 py-4 rounded shadow m-auto">
@@ -104,6 +108,10 @@
                                             <div class="team-2 text-center col-md-5">
                                                 <div class=" border-0 mb-1 px-4 py-4 rounded shadow  m-auto">
                                                     {{ form_widget(formulario.redForward, {attr:{'class' : 'btn btn-outline-dark w-75'}}) }}
+                                                </div>
+                                                <br>
+                                                <div class=" border-0 mb-1 m-auto ">
+                                                    <button id="rotate2" class="btn btn-outline-dark w-25"><i class="fa-solid fa-arrows-rotate"></i></button>
                                                 </div>
                                                 <br>
                                                 <div class=" border-0 mb-1 px-4 py-4 rounded shadow m-auto">

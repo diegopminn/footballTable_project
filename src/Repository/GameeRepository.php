@@ -105,7 +105,7 @@ class GameeRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder( 'g' )
             ->select('COUNT(g) as Bajaditas')
-            ->where('g.blueGols = 0 AND (g.blueForward = :player OR g.blueDefense = :player) OR g.redGols = 0 AND (g.redForward = :player OR g.redDefense = :player)')
+            ->where('g.blueGols = 0 AND g.redGols = 7 AND (g.blueForward = :player OR g.blueDefense = :player) OR g.redGols = 0 AND g.blueGols = 7 AND (g.redForward = :player OR g.redDefense = :player)')
             ->setParameter('player', $player)
             ->getQuery()
             ->getOneOrNullResult();

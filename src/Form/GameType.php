@@ -47,6 +47,7 @@ class GameType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Gamee::class,
+            'csrf_protection' => false
         ]);
     }
 }

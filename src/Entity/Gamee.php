@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Gamee
 {
     /**
+     * @var null|int
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -19,30 +20,35 @@ class Gamee
     private $id;
 
     /**
+     * @var null|Gamee
      * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="bluesForward")
      * @ORM\JoinColumn(nullable=false)
      */
     private $blueForward;
 
     /**
+     * @var null|Gamee
      * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="bluesDefense")
      * @ORM\JoinColumn(nullable=false)
      */
     private $blueDefense;
 
     /**
+     * @var null|Gamee
      * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="redsForward")
      * @ORM\JoinColumn(nullable=false)
      */
     private $redForward;
 
     /**
+     * @var null|Gamee
      * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="redsDefense")
      * @ORM\JoinColumn(nullable=false)
      */
     private $redDefense;
 
     /**
+     * @var null|int
      * @Assert\Length(min="0")
      * @Assert\Length(max="7")
      * @ORM\Column(type="integer")
@@ -50,6 +56,7 @@ class Gamee
     private $blueGols;
 
     /**
+     * @var null|int
      * @ORM\Column(type="integer")
      */
     private $redGols;

@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\StatusTrait;
+use App\Entity\Traits\UUIDTrait;
 use App\Repository\PlayerrRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,7 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Playerr
 {
+    use StatusTrait, UUIDTrait;
+
     /**
+     * @var null|int
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -21,171 +24,147 @@ class Playerr
     private $id;
 
     /**
+     * @var null|string
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    private $name;
 
     /**
+     * @var null|Gamee
      * @ORM\OneToMany(targetEntity=Gamee::class, mappedBy="blueForward")
      */
     private $bluesForward;
 
     /**
+     * @var null|Gamee
      * @ORM\OneToMany(targetEntity=Gamee::class, mappedBy="redDefense")
      */
     private $redsDefense;
 
     /**
+     * @var null|Gamee
      * @ORM\OneToMany(targetEntity=Gamee::class, mappedBy="redForward")
      */
     private $redsForward;
 
     /**
+     * @var null|Gamee
      * @ORM\OneToMany(targetEntity=Gamee::class, mappedBy="blueDefense")
      */
     private $bluesDefense;
 
-    public function getId(): ?int
+    /**
+     * @return int|null
+     */
+    public function getId (): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @param int|null $id
+     * @return Playerr
+     */
+    public function setId ( ?int $id ): Playerr
     {
-        return $this->Name;
-    }
-
-    public function setName(string $Name): self
-    {
-        $this->Name = $Name;
-
+        $this->id = $id;
         return $this;
     }
 
     /**
-     * @return Collection<int, Gamee>
+     * @return string|null
      */
-    public function getBluesForward(): Collection
+    public function getname (): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     * @return Playerr
+     */
+    public function setname ( ?string $name ): Playerr
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return Gamee|null
+     */
+    public function getBluesForward (): ?Gamee
     {
         return $this->bluesForward;
     }
 
-    public function addBluesForward(Gamee $bluesForward): self
+    /**
+     * @param Gamee|null $bluesForward
+     * @return Playerr
+     */
+    public function setBluesForward ( ?Gamee $bluesForward ): Playerr
     {
-        if (!$this->bluesForward->contains($bluesForward)) {
-            $this->bluesForward[] = $bluesForward;
-            $bluesForward->setBlueForward($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBluesForward(Gamee $bluesForward): self
-    {
-        if ($this->bluesForward->removeElement($bluesForward)) {
-            // set the owning side to null (unless already changed)
-            if ($bluesForward->getBlueForward() === $this) {
-                $bluesForward->setBlueForward(null);
-            }
-        }
-
+        $this->bluesForward = $bluesForward;
         return $this;
     }
 
     /**
-     * @return Collection<int, Gamee>
+     * @return Gamee|null
      */
-    public function getRedsDefense(): Collection
+    public function getRedsDefense (): ?Gamee
     {
         return $this->redsDefense;
     }
 
-    public function addRedsDefense(Gamee $redsDefense): self
+    /**
+     * @param Gamee|null $redsDefense
+     * @return Playerr
+     */
+    public function setRedsDefense ( ?Gamee $redsDefense ): Playerr
     {
-        if (!$this->redsDefense->contains($redsDefense)) {
-            $this->redsDefense[] = $redsDefense;
-            $redsDefense->setBlueDefense($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRedsDefense(Gamee $redsDefense): self
-    {
-        if ($this->redsDefense->removeElement($redsDefense)) {
-            // set the owning side to null (unless already changed)
-            if ($redsDefense->getBlueDefense() === $this) {
-                $redsDefense->setBlueDefense(null);
-            }
-        }
-
+        $this->redsDefense = $redsDefense;
         return $this;
     }
 
     /**
-     * @return Collection<int, Gamee>
+     * @return Gamee|null
      */
-    public function getRedsForward(): Collection
+    public function getRedsForward (): ?Gamee
     {
         return $this->redsForward;
     }
 
-
-    public function addRedsForward(Gamee $redsForward): self
+    /**
+     * @param Gamee|null $redsForward
+     * @return Playerr
+     */
+    public function setRedsForward ( ?Gamee $redsForward ): Playerr
     {
-        if (!$this->redsForward->contains($redsForward)) {
-            $this->redsForward[] = $redsForward;
-            $redsForward->setRedForward($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRedsForward(Gamee $redsForward): self
-    {
-        if ($this->redsForward->removeElement($redsForward)) {
-            // set the owning side to null (unless already changed)
-            if ($redsForward->getRedForward() === $this) {
-                $redsForward->setRedForward(null);
-            }
-        }
-
+        $this->redsForward = $redsForward;
         return $this;
     }
 
     /**
-     * @return Collection<int, Gamee>
+     * @return Gamee|null
      */
-    public function getBluesDefense(): Collection
+    public function getBluesDefense (): ?Gamee
     {
         return $this->bluesDefense;
     }
 
-    public function addBluesDefense(Gamee $bluesDefense): self
+    /**
+     * @param Gamee|null $bluesDefense
+     * @return Playerr
+     */
+    public function setBluesDefense ( ?Gamee $bluesDefense ): Playerr
     {
-        if (!$this->bluesDefense->contains($bluesDefense)) {
-            $this->bluesDefense[] = $bluesDefense;
-            $bluesDefense->setRedDefense($this);
-        }
-
+        $this->bluesDefense = $bluesDefense;
         return $this;
     }
 
-    public function removeBluesDefense(Gamee $bluesDefense): self
-    {
-        if ($this->bluesDefense->removeElement($bluesDefense)) {
-            // set the owning side to null (unless already changed)
-            if ($bluesDefense->getRedDefense() === $this) {
-                $bluesDefense->setRedDefense(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function __toString (): string
     {
-        return $this->Name;
+        return $this->name;
     }
 }

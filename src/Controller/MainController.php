@@ -5,11 +5,16 @@ namespace App\Controller;
 use App\Entity\Gamee;
 use App\Entity\Playerr;
 use App\Form\GameType;
+use App\Utils\Commons;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MainController extends AbstractController
 {
@@ -26,74 +31,150 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="app_main")
      */
-    public function index(Request $request): Response
+    public function index ( Request $request ): Response
     {
-        $players = $this->em->getRepository(Playerr::class)->findAllPlayers();
-        $lastGame = $this->em->getRepository(Gamee::class)->getLastGame();
-        $gamesperplayer =$this->parseGames($players);
-        $playersname = $this->getplayersname($players);
+        $players = $this->em->getRepository( Playerr::class )->findAllPlayers();
+        $lastGame = $this->em->getRepository( Gamee::class )->getLastGame();
+        $gamesperplayer = $this->parseGames( $players );
+        $playersname = $this->getPlayersName( $players );
         $game = new Gamee();
-        $form = $this->createForm(GameType::class, $game);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $this->em->persist($game);
-            $this->em->flush();
-            return $this->redirectToRoute('app_main');
-        }
-        return $this->render('main/index.html.twig', [
+
+        $form = $this->createForm( GameType::class, $game );
+
+        return $this->render( 'main/index.html.twig', [
             'players' => $players,
             'playersname' => $playersname,
             'formulario' => $form->createView(),
             'lastGame' => $lastGame,
             'games' => $gamesperplayer
-          //  'bajaditas' => $bajadita
-        ]);
+        ] );
 
+    }
+
+    /**
+     * @Route("/newgame",
+     *     options={"expose"=true},
+     *     name="app_newgame",
+     *     condition="request.isXmlHttpRequest()",
+     *     methods = {"POST"}
+     * )
+     */
+    public function ajaxGame ( Request $request, TranslatorInterface $translator ): JsonResponse
+    {
+        try {
+            $item = new Gamee();
+            $form = $this->createForm( GameType::class, $item );
+            $form->handleRequest( $request );
+
+            if ( $form->isSubmitted() && $form->isValid() ) {
+                /** @var Gamee $item */
+                $item = $form->getData();
+
+                if ( !$item->getBlueGols() && !$item->getRedGols() ) {
+                    return new JsonResponse( [
+                        'status' => 'ko',
+                        'message' => $translator->trans( 'swal.error_gol' )
+                    ] );
+                } else {
+                    if ( !$this->checkGames( $item ) ) {
+                        return new JsonResponse( [
+                            'status' => 'ko',
+                            'message' => $translator->trans( 'swal.error_norepeat' )
+                        ] );
+                    } else {
+                        if ( $this->checkGoles( $item ) ){
+                            $this->em->persist( $item );
+                            $this->em->flush();
+                            return new JsonResponse( [
+                                'status' => 'ok',
+                                'item_id' => $item->getId(),
+                            ] );
+                        }
+                        $this->em->persist( $item );
+                        $this->em->flush();
+                        return new JsonResponse( [
+                            'status' => 'ok',
+                            'item_id' => $item->getId(),
+                        ] );
+                    }
+                }
+            }
+            return new JsonResponse( [
+                'status' => 'ko',
+                'messages' => 'No valid form'
+            ] );
+        } catch (Exception $e) {
+            return new JsonResponse( [
+                'status' => 'error',
+                'messages' => 'El formulario no es valido',
+            ] );
+        }
     }
 
     /**
      * @Route("/games", name="app_games")
      */
-    public function games(Request $request): Response
+    public function games (): Response
     {
-        $lastsGame = $this->em->getRepository(Gamee::class)->getLastsGame();
-        return $this->render('main/games.html.twig', [
+        $lastsGame = $this->em->getRepository( Gamee::class )->getLastsGame();
+        return $this->render( 'main/games.html.twig', [
             'lastsGame' => $lastsGame
-        ]);
+        ] );
     }
 
     /**
      * @Route("/players", name="app_players")
      */
-    public function players(): Response
+    public function players (): Response
     {
-        $players = $this->em->getRepository(Playerr::class)->findAllPlayers();
-        $gamesperplayer =$this->parseGames($players);
-        return $this->render('main/players.html.twig', [
+        $players = $this->em->getRepository( Playerr::class )->findAllPlayers();
+        $gamesperplayer = $this->parseGames( $players );
+        return $this->render( 'main/players.html.twig', [
             'players' => $players,
             'totalgames' => $gamesperplayer
         ] );
     }
 
-    private function getplayersname (array $playerss)
+    private function getPlayersName ( array $playerss ): array
     {
         $zoosName = [];
         foreach ($playerss as $playurs) {
-            $zoosName[$playurs['id']] = $playurs['Name'];
+            $zoosName[$playurs['id']] = $playurs['name'];
         }
         return $zoosName;
     }
 
-    private function parseGames(array $players): array
+    private function parseGames ( array $players ): array
     {
-        foreach ($players as $player){
-            $wins = $this->em->getRepository(Gamee::class)->wins_players($player['id']);
-            $loses = $this->em->getRepository(Gamee::class)->loses_players($player['id']);
-            $bajadita = $this->em->getRepository(Gamee::class)->bajaditas($player['id']);
-            $parseGames[$player['Name']] = array_merge($wins, $loses, $bajadita);
+        foreach ($players as $player) {
+            $wins = $this->em->getRepository( Gamee::class )->wins_players( $player['id'] );
+            $loses = $this->em->getRepository( Gamee::class )->loses_players( $player['id'] );
+            $bajadita = $this->em->getRepository( Gamee::class )->bajaditas( $player['id'] );
+            $parseGames[$player['name']] = array_merge( $wins, $loses, $bajadita );
         }
         return $parseGames;
     }
 
+    private function checkGames ( Gamee $item )
+    {
+        if ( $item->getBlueForward()->getname() == $item->getRedForward()->getname() or $item->getBlueForward()->getname() == $item->getRedDefense()->getname() ) {
+            return false;
+        }
+        return true;
+    }
 
+    private function checkGoles(Gamee $item){
+        if ($item->getBlueGols()==1 && $item->getRedGols()==6){
+            $item->setBlueGols(0);
+            $item->setRedGols(5);
+            return true;
+        }else{
+            if ($item->getBlueGols()==6 && $item->getRedGols()==1){
+                $item->setBlueGols(5);
+                $item->setRedGols(0);
+                return true;
+            }
+            return false;
+        }
+    }
 }
