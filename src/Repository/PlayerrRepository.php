@@ -65,6 +65,8 @@ class PlayerrRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+
 //    /**
 //     * @return Playerr[] Returns an array of Playerr objects
 //     */
@@ -80,13 +82,13 @@ class PlayerrRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Playerr
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findOneBySomeField($value): ?Playerr
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.name = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

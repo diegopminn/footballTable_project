@@ -23,23 +23,22 @@ class GameType extends AbstractType
 
             ])
             ->add('blueDefense', EntityType::class, [
-                'class' => 'App\Entity\Playerr',
+                'class' => Playerr::class,
                 'placeholder' => 'Def.azul',
 
             ])
             ->add('blueGols', IntegerType::class, array('attr'=> array('min' => 0, 'max' => 7) ))
             ->add('redForward', EntityType::class, [
-                'class' => 'App\Entity\Playerr',
+                'class' => Playerr::class,
                 'placeholder' => 'Del.rojo',
 
             ])
             ->add('redDefense', EntityType::class, [
-                'class' => 'App\Entity\Playerr',
+                'class' => Playerr::class,
                 'placeholder' => 'Def.rojo',
 
             ])
             ->add('redGols', IntegerType::class, array('attr'=> array('min' => 0, 'max' => 7) ) )
-            ->add('save', SubmitType::class)
         ;
     }
 

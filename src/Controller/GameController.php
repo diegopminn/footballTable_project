@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class MainController extends AbstractController
+class GameController extends AbstractController
 {
     private $em;
 
@@ -28,38 +28,34 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_main")
+     * @Route("/games", name="app_games")
      */
-    public function index (): Response
+    public function games ( Request $request, PaginatorInterface $paginator ): Response
     {
-        $players = $this->em->getRepository( Playerr::class )->findAllPlayers();
-        $lastGame = $this->em->getRepository( Gamee::class )->getLastGame();
-        $gamesperplayer = $this->parseGames( $players );
-        $playersname = $this->getPlayersName( $players );
-        $game = new Gamee();
-        $form = $this->createForm( GameType::class, $game );
-
-        return $this->render( 'frontend/index/index.html.twig', [
-            'players' => $players,
-            'playersname' => $playersname,
-            'formulario' => $form->createView(),
-            'lastGame' => $lastGame,
-            'games' => $gamesperplayer
+        $lastsGames = $this->em->getRepository( Gamee::class )->getLastsGame();
+        $form = $this->createForm( GameType::class );
+        $games = $paginator->paginate(
+            $lastsGames, /* query NOT result */
+            $request->query->getInt( 'page', 1 ), /*page number*/
+            12 /*limit per page*/
+        );
+        return $this->render( 'frontend/games/games.html.twig', [
+            'games' => $games,
+            'form' => $form->createView()
         ] );
     }
 
     /**
-     * @Route("/newgame",
+     * @Route("/games/update/{id}",
+     *     name="app_update_game",
      *     options={"expose"=true},
-     *     name="app_newgame",
      *     condition="request.isXmlHttpRequest()",
-     *     methods = {"POST"}
-     * )
+     *     methods = {"POST"})
      */
-    public function ajaxGame ( Request $request, TranslatorInterface $translator ): JsonResponse
+    public function updateGame ( Request $request, TranslatorInterface $translator, $id ): JsonResponse
     {
         try {
-            $item = new Gamee();
+            $item = $this->em->getRepository( Gamee::class )->findOneBySomeField( $id );
             $form = $this->createForm( GameType::class, $item );
             $form->handleRequest( $request );
 
@@ -95,11 +91,12 @@ class MainController extends AbstractController
                         ] );
                     }
                 }
-            }
+            }else{
             return new JsonResponse( [
                 'status' => 'ko',
                 'messages' => 'No valid form'
             ] );
+            }
         } catch (Exception $e) {
             return new JsonResponse( [
                 'status' => 'error',
@@ -108,24 +105,29 @@ class MainController extends AbstractController
         }
     }
 
-    private function getPlayersName ( array $playerss ): array
+    /**
+     * @Route("/games/delete/{id}",
+     *     name="app_delete_game",
+     *     options={"expose"=true},
+     *     condition="request.isXmlHttpRequest()",
+     *     methods = {"POST"})
+     */
+    public function deleteGame ( $id ): JsonResponse
     {
-        $zoosName = [];
-        foreach ($playerss as $playurs) {
-            $zoosName[$playurs['id']] = $playurs['name'];
+        try {
+            $item = $this->em->getRepository( Gamee::class )->findOneBySomeField( $id );
+            $this->em->remove( $item );
+            $this->em->flush();
+            return new JsonResponse(
+                [ 'status' => 'ok',
+                    $this->redirectToRoute( 'app_games' )
+                ] );
+        } catch (Exception $e) {
+            return new JsonResponse( [
+                'status' => 'error',
+                'messages' => 'El formulario no es valido',
+            ] );
         }
-        return $zoosName;
-    }
-
-    private function parseGames ( array $players ): array
-    {
-        foreach ($players as $player) {
-            $wins = $this->em->getRepository( Gamee::class )->wins_players( $player['id'] );
-            $loses = $this->em->getRepository( Gamee::class )->loses_players( $player['id'] );
-            $bajadita = $this->em->getRepository( Gamee::class )->bajaditas( $player['id'] );
-            $parseGames[$player['name']] = array_merge( $wins, $loses, $bajadita );
-        }
-        return $parseGames;
     }
 
     private function checkGames ( Gamee $item )

@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+{% block block_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/playerstable.css') }}">
+{% endblock %}
+{% block body %}
+    <body>
+    <div>
+        <!-- header -->
+        {{ parent() }}
+        <!-- header -->
+        <!-- table -->
+        <section class="container sectionTable " >
+            <table class="custom-table-games">
+                <thead>
+                <tr>
+                    {# <th>Id</th> #}
+                    <th>Delatero Azul</th>
+                    <th>Defensa Azul</th>
+                    <th>Delantero Rojo</th>
+                    <th>Defensa Rojo</th>
+                    <th>Resultado</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for game in games %}
+                    {% set _style = "" %}
+                    {% if game.blueGols == 7 or game.redGols == 7 %}
+                        {% set _style = "background-color: #565964;" %}
+                    {% endif %}
+
+                    <tr id="{{ game.id }}" style="{{ _style }}">
+                        {#  <td data-target="id">{{ game.id }}</td> #}
+                        <td data-id=" {{ game.blueForward.id }} ">{{ game.blueForward }}</td>
+                        <td data-id=" {{ game.blueDefense.id }} ">{{ game.blueDefense }}</td>
+                        <td data-id=" {{ game.redForward.id }} ">{{ game.redForward }}</td>
+                        <td data-id=" {{ game.redDefense.id }} ">{{ game.redDefense }}</td>
+                        <td data-blueGoals="{{ game.blueGols }}" data-redGoals="{{ game.redGols }}">
+                            {{ game.blueGols }}-{{ game.redGols }}
+                        </td>
+                        <td>
+                            <button class="btn delete-btn" data-name="{{ game.id }}"><i class="fa-solid fa-trash"></i>
+                            </button>
+                            <button class="btn edit-btn" data-id="{{ game.id }}" data-toggle="modal"
+                                    data-target="#updateGameModal"><i class="fa-solid fa-pen-to-square"></i></button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% include 'frontend/games/form_modal_update_game.html.twig' %}
+                </tbody>
+            </table>
+            <br>
+            <div class="pagination">
+                {{ knp_pagination_render(games) }}
+            </div>
+        </section>
+    </div>
+    </body>
+{% endblock %}
+{% block block_javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/games.js') }}"></script>
+{% endblock %}
+{% block footer %}{% endblock %}
+

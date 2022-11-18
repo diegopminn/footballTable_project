@@ -255,7 +255,7 @@ jQuery(document).ready(function($) {
 
 		$('#date-countdown, #date-countdown2').countdown('2023/01/01', function(event) {
 		  var $this = $(this).html(event.strftime(''
-		    + '<span class="countdown-block"><span class="label">%w</span> weeks </span>'
+		    + '<span class="countdown-block"><span class="label">%m</span> month </span>'
 		    + '<span class="countdown-block"><span class="label">%d</span> days </span>'
 		    + '<span class="countdown-block"><span class="label">%H</span> hr </span>'
 		    + '<span class="countdown-block"><span class="label">%M</span> min </span>'
@@ -282,7 +282,7 @@ jQuery(document).ready(function($) {
 	// navigation
   var OnePageNavigation = function() {
     var navToggler = $('.site-menu-toggle');
-   	$("body").on("click", ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a", function(e) {
+   	$("body").on("click", ".frontend-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a", function(e) {
       e.preventDefault();
 
       var hash = this.hash;

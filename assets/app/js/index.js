@@ -1,4 +1,7 @@
 $(document).ready(function () {
+
+   // $('.js-example-basic-single').select2();
+
     $("#rotate").on('click', function (e) {
         e.preventDefault();
         swap('game_blueForward', 'game_blueDefense');
@@ -24,31 +27,16 @@ $(document).ready(function () {
     });
 });
 
-function swalError() {
-    Swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: 'Ha habido un error de sistema.'
-    })
-}
+//TODO Richi: Como no hardcodear los jugadores y traerlos del formulario?
+function swap(forward, defense) {
 
-function swallSuccess() {
-    Swal.fire({
-        position: 'top-center',
-        icon: 'success',
-        title: 'Your work has been saved',
-        showConfirmButton: false,
-        timer: 1500
-    })
-}
+    var forward1 = $("#" + forward + " option:selected").val();
+    var defense1 = $("#" + defense + "  option:selected").val();
 
-function swap(game_blueForward, game_blueDefense) {
-
-    var forward = $("#" + game_blueForward + " option:selected").val();
-    var defense = $("#" + game_blueDefense + "  option:selected").val();
-
-    $("#" + game_blueForward + " option[value=" + defense + "]")
+    $("#" + forward + " option[value=" + defense1 + "]")
         .prop("selected", true);
-    $("#" + game_blueDefense + " option[value=" + forward + "]")
+    $("#" + defense + " option[value=" + forward1 + "]")
         .prop("selected", true);
 }
+
+

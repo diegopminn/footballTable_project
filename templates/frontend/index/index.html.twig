@@ -30,6 +30,7 @@
         </div>
         <!-- Season ends -->
 
+
         <!-- Latest game played-->
         <div class="container">
 
@@ -89,7 +90,8 @@
                                                 </div>
                                                 <br>
                                                 <div class=" border-0 mb-1 m-auto ">
-                                                        <button  id="rotate" class="btn btn-outline-dark w-25"><i class="fa-solid fa-arrows-rotate"></i></button>
+                                                    <button id="rotate" class="btn btn-outline-dark w-25"><i
+                                                                class="fa-solid fa-arrows-rotate"></i></button>
                                                 </div>
                                                 <br>
                                                 <div class=" border-0 mb-1 px-4 py-4 rounded shadow m-auto">
@@ -111,7 +113,8 @@
                                                 </div>
                                                 <br>
                                                 <div class=" border-0 mb-1 m-auto ">
-                                                    <button id="rotate2" class="btn btn-outline-dark w-25"><i class="fa-solid fa-arrows-rotate"></i></button>
+                                                    <button id="rotate2" class="btn btn-outline-dark w-25"><i
+                                                                class="fa-solid fa-arrows-rotate"></i></button>
                                                 </div>
                                                 <br>
                                                 <div class=" border-0 mb-1 px-4 py-4 rounded shadow m-auto">
@@ -128,9 +131,9 @@
                             </div>
                             <!-- FIN FORMULARIO -->
                             <div class="text-center widget-vs-contents mb-4">
-                                <span class="input-group-btn">
-                                    {{ form_widget(formulario.children['save'], {attr:{'class' : 'btnSave btn-outline-dark w-75'}}) }}
-                                </span>
+                                <button class="input-group-btn btnSave btn-outline-dark w-75" type="submit">
+                                    Save
+                                </button>
                             </div>
                             {{ form_end(formulario) }}
                         </div>
@@ -279,7 +282,6 @@
 
             </div>
         </div>
-
     </div>
     </body>
 {% endblock %}
