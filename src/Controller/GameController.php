@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Gamee;
-use App\Entity\Post;
 use App\Form\GameType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -53,6 +52,7 @@ class GameController extends AbstractController
 
     /**
      * @Route("/games/season/{year}/{startMonth}-{endMonth}", name="app_games_seasons")
+     * @throws Exception
      */
     public function gamesSeason ( Request $request, PaginatorInterface $paginator, string $year, string $startMonth, string $endMonth  ): Response
     {
