@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Playerr;
-use App\Entity\Post;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -18,29 +17,26 @@ class DashboardController extends AbstractDashboardController
     /**
      * @Route("/admin", name="admin")
      */
-    public function index(): Response
+    public function index (): Response
     {
-        $routeBuilder = $this->get( AdminUrlGenerator::class );
+        $adminUrlGenerator = $this->container->get( AdminUrlGenerator::class );
 
-        return $this->redirect( $routeBuilder->setController( PlayerCrudController::class )->generateUrl() );
+        return $this->redirect( $adminUrlGenerator->setController( PlayerCrudController::class )->generateUrl() );
     }
 
-    public function configureDashboard(): Dashboard
+    public function configureDashboard (): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('FootballTable Project');
+            ->setTitle( 'FootballTable Project' );
     }
 
-    public function configureMenuItems(): iterable
+    public function configureMenuItems (): iterable
     {
-        yield MenuItem::subMenu( 'Players', 'fa fa-wpforms' )->setSubItems( [
-            MenuItem::linkToCrud( 'Crear Player', 'fas fa-plus', Playerr::class )->setAction( Crud::PAGE_NEW ),
-            MenuItem::linkToCrud( 'Ver Players', 'fas fa-eye', Playerr::class )
-        ] );
-
-        yield MenuItem::subMenu( 'User', 'fa fa-user' )->setSubItems( [
-            MenuItem::linkToCrud( 'Crear Usuario', 'fas fa-plus', User::class )->setAction( Crud::PAGE_NEW ),
-            MenuItem::linkToCrud( 'Ver Usuario', 'fas fa-eye', User::class )
-        ] );
+        return [
+                MenuItem::linkToCrud( 'Crear Player', 'fas fa-plus', Playerr::class )->setAction( Crud::PAGE_NEW ),
+                MenuItem::linkToCrud( 'Ver Players', 'fas fa-eye', Playerr::class ),
+                MenuItem::linkToCrud( 'Crear Usuario', 'fas fa-plus', User::class )->setAction( Crud::PAGE_NEW ),
+                MenuItem::linkToCrud( 'Ver Usuario', 'fas fa-eye', User::class ),
+        ];
     }
 }

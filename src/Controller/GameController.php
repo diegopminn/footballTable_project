@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Gamee;
-use App\Entity\Playerr;
 use App\Form\GameType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -58,10 +57,7 @@ class GameController extends AbstractController
             $item = $this->em->getRepository( Gamee::class )->findOneBySomeField( $id );
             $form = $this->createForm( GameType::class, $item );
             $form->handleRequest( $request );
-
             if ( $form->isSubmitted() && $form->isValid() ) {
-                /** @var Gamee $item */
-                $item = $form->getData();
 
                 if ( !$item->getBlueGols() && !$item->getRedGols() ) {
                     return new JsonResponse( [
@@ -76,14 +72,12 @@ class GameController extends AbstractController
                         ] );
                     } else {
                         if ( $this->checkGoles( $item ) ) {
-                            $this->em->persist( $item );
                             $this->em->flush();
                             return new JsonResponse( [
                                 'status' => 'ok',
                                 'item_id' => $item->getId(),
                             ] );
                         }
-                        $this->em->persist( $item );
                         $this->em->flush();
                         return new JsonResponse( [
                             'status' => 'ok',
@@ -91,11 +85,11 @@ class GameController extends AbstractController
                         ] );
                     }
                 }
-            }else{
-            return new JsonResponse( [
-                'status' => 'ko',
-                'messages' => 'No valid form'
-            ] );
+            } else {
+                return new JsonResponse( [
+                    'status' => 'ko',
+                    'messages' => 'No valid form'
+                ] );
             }
         } catch (Exception $e) {
             return new JsonResponse( [

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\GameeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Monolog\DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -62,6 +63,11 @@ class Gamee
     private $redGols;
 
     /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $createdAt;
+
+    /**
      * @param $blueForward
      * @param $blueDefense
      * @param $redForward
@@ -77,6 +83,7 @@ class Gamee
         $this->redDefense = $redDefense;
         $this->blueGols = $blueGols;
         $this->redGols = $redGols;
+        $this->createdAt = new \DateTimeImmutable();
     }
 
 
@@ -156,4 +163,26 @@ class Gamee
 
         return $this;
     }
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getCreatedAt (): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTimeImmutable $createdAt
+     * @return Gamee
+     */
+    public function setCreatedAt ( \DateTimeImmutable $createdAt ): Gamee
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+
+
+
 }

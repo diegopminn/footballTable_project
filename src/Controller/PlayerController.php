@@ -4,17 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Gamee;
 use App\Entity\Playerr;
-use App\Form\GameType;
 use App\Form\PlayerType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PlayerController extends AbstractController
 {
@@ -97,9 +94,9 @@ class PlayerController extends AbstractController
             $this->em->remove( $item );
             $this->em->flush();
             return new JsonResponse(
-                ['status' => 'ok',
-                $this->redirectToRoute( 'app_players' )
-                ]);
+                [ 'status' => 'ok',
+                    $this->redirectToRoute( 'app_players' )
+                ] );
         } catch (Exception $e) {
             return new JsonResponse( [
                 'status' => 'error',

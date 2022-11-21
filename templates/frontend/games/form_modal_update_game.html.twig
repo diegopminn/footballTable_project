@@ -14,12 +14,24 @@
             <!-- Modal Body -->
             <div class="modal-body">
                 {{ form_start(form, {'attr': {'id': 'form_update_player'}}) }}
-                {{ form_widget(form.blueForward) }}
-                {{ form_widget(form.blueDefense) }}
-                {{ form_widget(form.blueGols) }}
-                {{ form_widget(form.redForward) }}
-                {{ form_widget(form.redDefense) }}
-                {{ form_widget(form.redGols) }}
+                <div class=" border-0 mb-1 px-1 py-1 rounded shadow m-25">
+                {{ form_widget(form.blueForward, {attr:{'class' : 'w-100'}}) }}
+                </div>
+                <div class=" border-0 mb-1 px-1 py-1 rounded shadow m-25 ">
+                {{ form_widget(form.blueDefense, {attr:{'class' : 'w-100'}}) }}
+                </div>
+                    <div class=" border-0 mb-1 px-1 py-1 rounded shadow m-25 ">
+                {{ form_widget(form.blueGols, {attr:{'class' : 'w-100'}}) }}
+                    </div>
+                <div class=" border-0 mb-1 px-1 py-1 rounded shadow m-25 ">
+                {{ form_widget(form.redForward, {attr:{'class' : 'w-100'}}) }}
+                </div>
+                <div class=" border-0 mb-1 px-1 py-1 rounded shadow m-25 ">
+                {{ form_widget(form.redDefense, {attr:{'class' : 'w-100'}}) }}
+                </div>
+                <div class=" border-0 mb-1 px-1 py-1 rounded shadow m-25 ">
+                {{ form_widget(form.redGols, {attr:{'class' : 'w-100'}}) }}
+                </div>
             </div>
 
             <!-- Modal Footer -->

@@ -10,7 +10,7 @@
         {{ parent() }}
         <!-- header -->
         <!-- table -->
-        <section class="container sectionTable " >
+        <section class="container sectionTable">
             <table class="custom-table-games">
                 <thead>
                 <tr>
@@ -24,7 +24,6 @@
                 </tr>
                 </thead>
                 <tbody>
-
                 {% for game in games %}
                     {% set _style = "" %}
                     {% if game.blueGols == 7 or game.redGols == 7 %}
@@ -37,7 +36,8 @@
                         <td data-id=" {{ game.blueDefense.id }} ">{{ game.blueDefense }}</td>
                         <td data-id=" {{ game.redForward.id }} ">{{ game.redForward }}</td>
                         <td data-id=" {{ game.redDefense.id }} ">{{ game.redDefense }}</td>
-                        <td data-blueGoals="{{ game.blueGols }}" data-redGoals="{{ game.redGols }}">
+                        <td data-blueGoals="{{ game.blueGols }}" data-redGoals="{{ game.redGols }}"
+                            data-date="{{ game.createdAt|date("m/d/Y H:i:s") }}">
                             {{ game.blueGols }}-{{ game.redGols }}
                         </td>
                         <td>
@@ -63,5 +63,5 @@
     {{ parent() }}
     <script src="{{ asset('bundles/app/js/games.js') }}"></script>
 {% endblock %}
-{% block footer %}{% endblock %}
+
 

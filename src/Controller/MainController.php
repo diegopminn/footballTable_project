@@ -7,7 +7,6 @@ use App\Entity\Playerr;
 use App\Form\GameType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

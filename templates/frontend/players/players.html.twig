@@ -8,49 +8,48 @@
     <div>
         {{ parent() }}
         <div class="container">
-        <div class="row">
-            <div class="col-md-12 col-xl-12">
-                <div class="btn-toolbar justify-content-end position-relative btnNew" style="z-index:2000!important;">
-                    {% include 'frontend/players/form_modal_new_player.html.twig' %}
-                </div>
-                <section class="sectionTable1">
-                    <table class="custom-table-games">
-                        <thead>
-                        <tr class="row m-auto">
-                            <th class="col">Players</th>
-                            <th class="col">Victorias</th>
-                            <th class="col">Derrotas</th>
-                            <th class="col">Part.totales</th>
-                            <th class="col">KDA</th>
-                            <th class="col">Bajaditas</th>
-                            <th class="col"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for key, player in totalgames %}
+            <div class="row">
+                <div class="col-md-12 col-xl-12">
+                    <div class="btn-toolbar justify-content-end position-relative btnNew"
+                         style="z-index:2000!important;">
+                        {% include 'frontend/players/form_modal_new_player.html.twig' %}
+                    </div>
+                    <section class="sectionTable1">
+                        <table class="custom-table-games">
+                            <thead>
                             <tr class="row m-auto">
-                                <td class="col"><strong class="text-white">{{ key }}</strong></td>
-                                <td class="col">{{ player.Victorias }}</td>
-                                <td class="col">{{ player.Derrotas }}</td>
-                                {% set totalGames = player.Victorias + player.Derrotas %}
-                                <td class="col">{{ totalGames }}</td>
-                                {% set division = (player.Victorias and totalGames ? player.Victorias / totalGames : 0) %}
-                                <td class="col"> {{ division | slice (0, 4) }} </td>
-                                <td class="col">{{ player.Bajaditas }} </td>
-                                <td class="col">
-                                    <button class="btn  delete-btn" data-name="{{ key }}"><i
-                                                class="fa-solid fa-trash"></i>
-                                    </button>
-                                    <button class="btn  delete-btn" data-name="{{ key }}"><i
-                                                class="fa-solid fa-pen-to-square"></i></button>
-                                </td>
+                                <th class="col">Players</th>
+                                <th class="col">Victorias</th>
+                                <th class="col">Derrotas</th>
+                                <th class="col">Part.totales</th>
+                                <th class="col">KDA</th>
+                                <th class="col">Bajaditas</th>
+                                <th class="col"></th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </section>
+                            </thead>
+                            <tbody>
+                            {% for key, player in totalgames %}
+                                <tr class="row m-auto">
+                                    <td class="col"><strong class="text-white">{{ key }}</strong></td>
+                                    <td class="col">{{ player.Victorias }}</td>
+                                    <td class="col">{{ player.Derrotas }}</td>
+                                    {% set totalGames = player.Victorias + player.Derrotas %}
+                                    <td class="col">{{ totalGames }}</td>
+                                    {% set division = (player.Victorias and totalGames ? player.Victorias / totalGames : 0) %}
+                                    <td class="col"> {{ division | slice (0, 4) }} </td>
+                                    <td class="col">{{ player.Bajaditas }} </td>
+                                    <td class="col">
+                                        <button class="btn  delete-btn" data-name="{{ key }}"><i
+                                                    class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
             </div>
-        </div>
         </div>
     </div>
     </body>
@@ -59,5 +58,5 @@
     {{ parent() }}
     <script src="{{ asset('bundles/app/js/players.js') }}"></script>
 {% endblock %}
-{% block footer %}{% endblock %}
+
 
