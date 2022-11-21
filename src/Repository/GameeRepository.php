@@ -73,6 +73,22 @@ class GameeRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
+    public function getDates ( \DateTime $StartDate, \DateTime $EndDate )
+    {
+        return $this->createQueryBuilder( 'gamee' )
+            ->where( 'gamee.createdAt >= :StartDate ' )
+            ->andWhere( 'gamee.createdAt < :EndDate ' )
+            ->orderBy( 'gamee.createdAt', 'DESC' )
+            ->setParameter( 'StartDate', $StartDate )
+            ->setParameter( 'EndDate', $EndDate )
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function wins_players ($player)
     {
         return $this->createQueryBuilder( 'g' )

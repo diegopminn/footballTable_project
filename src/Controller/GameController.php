@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Gamee;
+use App\Entity\Post;
 use App\Form\GameType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -29,10 +30,15 @@ class GameController extends AbstractController
     /**
      * @Route("/games", name="app_games")
      */
-    public function games ( Request $request, PaginatorInterface $paginator ): Response
+    public function games ( Request $request, PaginatorInterface $paginator, ?string $year = null ): Response
     {
         $lastsGames = $this->em->getRepository( Gamee::class )->getLastsGame();
         $form = $this->createForm( GameType::class );
+        if ( $year ) {
+            $currentYear = $year;
+        } else {
+            $currentYear = (new \DateTimeImmutable())->format( 'Y' );
+        }
         $games = $paginator->paginate(
             $lastsGames, /* query NOT result */
             $request->query->getInt( 'page', 1 ), /*page number*/
@@ -40,6 +46,36 @@ class GameController extends AbstractController
         );
         return $this->render( 'frontend/games/games.html.twig', [
             'games' => $games,
+            'form' => $form->createView(),
+            'currentYear' => $currentYear
+        ] );
+    }
+
+    /**
+     * @Route("/games/season/{year}/{startMonth}-{endMonth}", name="app_games_seasons")
+     */
+    public function gamesSeason ( Request $request, PaginatorInterface $paginator, string $year, string $startMonth, string $endMonth  ): Response
+    {
+        $form = $this->createForm( GameType::class );
+        $startDate = (new \DateTime( $year . "-" . $startMonth ))->modify( 'first day of this month 00:00:00' );
+        $endDate = (new \DateTime( $year . "-" . $endMonth ))->modify( 'last day of this month 23:59:59' );
+        $query = $this->em->getRepository( Gamee::class )->getDates( $startDate, $endDate );
+        if ( $year ) {
+            $currentYear = $year;
+        } else {
+            $currentYear = (new \DateTimeImmutable())->format( 'Y' );
+        }
+
+        $games = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt( 'page', 1 ), /*page number*/
+            12 /*limit per page*/
+        );
+        return $this->render( 'frontend/games/games.html.twig', [
+            'games' => $games,
+            'currentYear' => $currentYear,
+            'startMonth' => $startMonth,
+            'endMonth' => $endMonth,
             'form' => $form->createView()
         ] );
     }

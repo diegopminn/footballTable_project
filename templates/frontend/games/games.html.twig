@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+    {% set translationMonth = {'01': 'Enero', '03': 'Marzo', '04': 'Abril', '06': 'Junio', '07': 'Julio', '09': 'Septiembre', '10': 'Octubre', '12': 'Diciembre'} %}
 {% block block_stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/app/css/playerstable.css') }}">
@@ -10,52 +11,86 @@
         {{ parent() }}
         <!-- header -->
         <!-- table -->
-        <section class="container sectionTable">
-            <table class="custom-table-games">
-                <thead>
-                <tr>
-                    {# <th>Id</th> #}
-                    <th>Delatero Azul</th>
-                    <th>Defensa Azul</th>
-                    <th>Delantero Rojo</th>
-                    <th>Defensa Rojo</th>
-                    <th>Resultado</th>
-                    <th>Edit</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for game in games %}
-                    {% set _style = "" %}
-                    {% if game.blueGols == 7 or game.redGols == 7 %}
-                        {% set _style = "background-color: #565964;" %}
-                    {% endif %}
-
-                    <tr id="{{ game.id }}" style="{{ _style }}">
-                        {#  <td data-target="id">{{ game.id }}</td> #}
-                        <td data-id=" {{ game.blueForward.id }} ">{{ game.blueForward }}</td>
-                        <td data-id=" {{ game.blueDefense.id }} ">{{ game.blueDefense }}</td>
-                        <td data-id=" {{ game.redForward.id }} ">{{ game.redForward }}</td>
-                        <td data-id=" {{ game.redDefense.id }} ">{{ game.redDefense }}</td>
-                        <td data-blueGoals="{{ game.blueGols }}" data-redGoals="{{ game.redGols }}"
-                            data-date="{{ game.createdAt|date("m/d/Y H:i:s") }}">
-                            {{ game.blueGols }}-{{ game.redGols }}
-                        </td>
-                        <td>
-                            <button class="btn delete-btn" data-name="{{ game.id }}"><i class="fa-solid fa-trash"></i>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-xl-12">
+                    <div class="btn-toolbar justify-content-start position-relative btnSeason "
+                         style="z-index:999999!important;">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if startMonth is not defined %}
+                                    Temporada
+                                {% else %}
+                                    {{ startMonth | trans(translationMonth) }} - {{ endMonth  | trans(translationMonth) }}
+                                {% endif %}
                             </button>
-                            <button class="btn edit-btn" data-id="{{ game.id }}" data-toggle="modal"
-                                    data-target="#updateGameModal"><i class="fa-solid fa-pen-to-square"></i></button>
-                        </td>
-                    </tr>
-                {% endfor %}
-                {% include 'frontend/games/form_modal_update_game.html.twig' %}
-                </tbody>
-            </table>
-            <br>
-            <div class="pagination">
-                {{ knp_pagination_render(games) }}
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item">{{ currentYear }}</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item"
+                                   href="{{ path('app_games_seasons',{year: currentYear, startMonth: '01', endMonth: '03'}) }}">Enero-Marzo</a>
+                                <a class="dropdown-item"
+                                   href="{{ path('app_games_seasons',{year: currentYear, startMonth: '04', endMonth: '06'}) }}">Abril-Junio</a>
+                                <a class="dropdown-item"
+                                   href="{{ path('app_games_seasons',{year: currentYear, startMonth: '07', endMonth: '09'}) }}">Julio-Septiembre</a>
+                                <a class="dropdown-item"
+                                   href="{{ path('app_games_seasons',{year: currentYear, startMonth: '10', endMonth: '12'}) }}">Octubre-Diciembre</a>
+                                <a class="dropdown-item" href="{{ path('app_games') }}">Total</a>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="sectionTable">
+                        <table class="custom-table-games">
+                            <thead>
+                            <tr>
+                                <th>Delatero Azul</th>
+                                <th>Defensa Azul</th>
+                                <th>Delantero Rojo</th>
+                                <th>Defensa Rojo</th>
+                                <th>Resultado</th>
+                                <th>Fecha</th>
+                                <th>Editar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for game in games %}
+                                {% set _style = "" %}
+                                {% if game.blueGols == 7 or game.redGols == 7 %}
+                                    {% set _style = "background-color: #565964;" %}
+                                {% endif %}
+
+                                <tr id="{{ game.id }}" style="{{ _style }}">
+                                    <td data-id=" {{ game.blueForward.id }} ">{{ game.blueForward }}</td>
+                                    <td data-id=" {{ game.blueDefense.id }} ">{{ game.blueDefense }}</td>
+                                    <td data-id=" {{ game.redForward.id }} ">{{ game.redForward }}</td>
+                                    <td data-id=" {{ game.redDefense.id }} ">{{ game.redDefense }}</td>
+                                    <td data-blueGoals="{{ game.blueGols }}" data-redGoals="{{ game.redGols }}"
+                                        data-date="{{ game.createdAt|date("m/d/Y H:i:s") }}">
+                                        {{ game.blueGols }}-{{ game.redGols }}
+                                    </td>
+                                    <td>{{ game.createdAt|date("m/d/Y") }}</td>
+                                    <td>
+                                        <button class="btn delete-btn" data-name="{{ game.id }}"><i
+                                                    class="fa-solid fa-trash"></i>
+                                        </button>
+                                        <button class="btn edit-btn" data-id="{{ game.id }}" data-toggle="modal"
+                                                data-target="#updateGameModal"><i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% include 'frontend/games/form_modal_update_game.html.twig' %}
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <br>
+                <div class="pagination">
+                    {{ knp_pagination_render(games) }}
+                </div>
             </div>
-        </section>
+        </div>
     </div>
     </body>
 {% endblock %}

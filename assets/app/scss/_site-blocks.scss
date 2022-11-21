@@ -49,26 +49,6 @@
 	}
 }
 
-#date-countdown2 {
-	margin-bottom: 20px;
-	.countdown-block {
-		display: inline-block;
-		font-size: 12px;
-		border-radius: 7px;
-		color: $white;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		width: 80px;
-		margin-right: 8px;
-		text-align: center;
-		.label {
-			line-height: 1.2;
-			font-size: 1rem;
-			display: block;
-		}
-	}
-}
-
 .more {
 	text-transform: uppercase;
 	font-size: 12px;

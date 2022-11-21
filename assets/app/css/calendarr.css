@@ -1,0 +1,35 @@
+.blog-archives .blog-archive-calendar {
+    border:2px solid #999b9b;
+    border-radius: 2px;
+    margin-bottom:10px;
+    max-width:250px
+}
+.blog-archives .blog-archive-calendar .blog-archive-calendar-month-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    padding:6px
+}
+.blog-archives .blog-archive-calendar .blog-archive-calendar-year {
+    background: #999b9b;
+    border-top-left-radius:2px;
+    border-top-right-radius:2px;
+    color: #56565e;
+    font-size:var(--font-size-sm);
+    font-weight:700;
+    margin-bottom:0;
+    padding:3px 6px;
+    text-align:center
+}
+.blog-archives .blog-archive-calendar .blog-archive-calendar-month {
+    font-size:var(--font-size-sm);
+    text-align:center
+}
+.blog-archives .blog-archive-calendar .blog-archive-calendar-month a,
+.blog-archives .blog-archive-calendar .blog-archive-calendar-month span {
+    display:block;
+    padding:5px
+}
+.blog-archives .blog-archive-calendar .blog-archive-calendar-month .disabled {
+    color: #050607;
+    opacity:.6
+}
