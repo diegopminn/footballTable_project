@@ -7,10 +7,12 @@ use App\Entity\Playerr;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class GameType extends AbstractType
 {
@@ -39,6 +41,23 @@ class GameType extends AbstractType
 
             ])
             ->add('redGols', IntegerType::class, array('attr'=> array('min' => 0, 'max' => 7) ) )
+            ->add('file', FileType::class, [
+                'label' => 'File',
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '100024k',
+                        'mimeTypes' => [
+                            'video/x-msvideo',
+                            'video/mpeg',
+                            'video/webm',
+                            'video/3gpp',
+                            'video/3gpp2',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid Video',
+                    ])
+                ]
+            ])
         ;
     }
 

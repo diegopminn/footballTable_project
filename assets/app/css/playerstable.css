@@ -8,6 +8,7 @@ body {
 }
 
 .custom-table-games {
+    width: 100%;
     margin-bottom: 0;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -118,10 +119,6 @@ h2 a {
     background-color: #1F2739;
 }
 
-.container td:first-child {
-    color: #FB667A;
-}
-
 
 @media (max-width: 800px) {
     .container td:nth-child(4),
@@ -129,3 +126,23 @@ h2 a {
         display: none;
     }
 }
+.pagination{
+    margin: 0 0.3em 0.3em 0;
+    padding:0.35em 10em;
+    justify-content: center;
+}
+/* Games table style */
+.sectionTable{
+    margin-top: 30px;
+}
+.btnSeason{
+    margin-top: 100px;
+}
+/* Players table style */
+.sectionTable1{
+    margin-top: 30px;
+}
+.btnNew{
+    margin-top: 100px;
+}
+

@@ -8,10 +8,12 @@ use App\Form\GameType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MainController extends AbstractController
@@ -55,7 +57,7 @@ class MainController extends AbstractController
      *     methods = {"POST"}
      * )
      */
-    public function ajaxGame ( Request $request, TranslatorInterface $translator ): JsonResponse
+    public function ajaxGame ( Request $request, TranslatorInterface $translator, SluggerInterface $slugger ): JsonResponse
     {
         try {
             $item = new Gamee();
@@ -65,6 +67,7 @@ class MainController extends AbstractController
             if ( $form->isSubmitted() && $form->isValid() ) {
                 /** @var Gamee $item */
                 $item = $form->getData();
+                $file = $form->get( 'file' )->getData();
 
                 if ( !$item->getBlueGols() && !$item->getRedGols() ) {
                     return new JsonResponse( [
@@ -72,7 +75,7 @@ class MainController extends AbstractController
                         'message' => $translator->trans( 'swal.error_gol' )
                     ] );
                 } else {
-                    if ( !$this->checkGames( $item ) ) {
+                    if ( !$this->checkNames( $item ) ) {
                         return new JsonResponse( [
                             'status' => 'ko',
                             'message' => $translator->trans( 'swal.error_norepeat' )
@@ -85,13 +88,31 @@ class MainController extends AbstractController
                                 'status' => 'ok',
                                 'item_id' => $item->getId(),
                             ] );
+                        } else {
+                            if ( $file ) {
+                                $originalFilename = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
+                                $safeFilename = $slugger->slug( $originalFilename );
+                                $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+                                try {
+                                    $file->move(
+                                        $this->getParameter( 'files_directory' ),
+                                        $newFilename
+                                    );
+                                    $item->setFile( $newFilename );
+                                    $this->em->persist( $item );
+                                    $this->em->flush();
+                                    return new JsonResponse( [
+                                        'status' => 'ok',
+                                        'item_id' => $item->getId(),
+                                    ] );
+                                } catch (FileException $e) {
+                                    return new JsonResponse( [
+                                        'status' => 'ko',
+                                        'message' => $translator->trans( 'swal.error_file' )
+                                    ] );
+                                }
+                            }
                         }
-                        $this->em->persist( $item );
-                        $this->em->flush();
-                        return new JsonResponse( [
-                            'status' => 'ok',
-                            'item_id' => $item->getId(),
-                        ] );
                     }
                 }
             }
@@ -127,7 +148,7 @@ class MainController extends AbstractController
         return $parseGames;
     }
 
-    private function checkGames ( Gamee $item )
+    private function checkNames ( Gamee $item )
     {
         if ( $item->getBlueForward()->getname() == $item->getRedForward()->getname() or $item->getBlueForward()->getname() == $item->getRedDefense()->getname() ) {
             return false;

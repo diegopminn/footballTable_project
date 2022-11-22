@@ -281,11 +281,12 @@ h1, h2, h3, h4, h5,
     color: #fff; }
 
 .site-navbar {
+  top: 0;
   margin-bottom: 0px;
   z-index: 1999;
-  position: absolute;
+  position: fixed;
   width: 100%;
-  height: 130px;}
+  height: 81px;}
   .site-navbar .container-fluid {
     padding-left: 7rem;
     padding-right: 7rem; }
@@ -604,12 +605,13 @@ h1, h2, h3, h4, h5,
   background-size: cover;
   background-position: center center; }
   .hero, .hero > .container > .row {
-    height: 80vh;
+    height: 70vh;
     min-height: 500px; }
   .hero.overlay:before {
     content: "";
     position: absolute;
     background: rgba(0, 0, 0, 0.5);
+    height: 83.5vh;
     top: 0;
     left: 0;
     right: 0;
@@ -638,23 +640,6 @@ h1, h2, h3, h4, h5,
     #date-countdown .countdown-block .label {
       line-height: 1.2;
       font-size: 2rem;
-      display: block; }
-
-#date-countdown2 {
-  margin-bottom: 20px; }
-  #date-countdown2 .countdown-block {
-    display: inline-block;
-    font-size: 12px;
-    border-radius: 7px;
-    color: #fff;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 80px;
-    margin-right: 8px;
-    text-align: center; }
-    #date-countdown2 .countdown-block .label {
-      line-height: 1.2;
-      font-size: 1rem;
       display: block; }
 
 .more {

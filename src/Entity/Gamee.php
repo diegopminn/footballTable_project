@@ -68,6 +68,11 @@ class Gamee
     private $createdAt;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $file;
+
+    /**
      * @param $blueForward
      * @param $blueDefense
      * @param $redForward
@@ -179,6 +184,18 @@ class Gamee
     public function setCreatedAt ( \DateTimeImmutable $createdAt ): Gamee
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    public function setFile(?string $file): self
+    {
+        $this->file = $file;
+
         return $this;
     }
 
