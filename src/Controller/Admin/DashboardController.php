@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Gamee;
 use App\Entity\Playerr;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -15,28 +16,56 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends AbstractDashboardController
 {
     /**
+     * @var string
+     */
+    private string $dashboardTitleImage;
+
+    /**
+     * @var string
+     */
+    private string $dashboardFavicon;
+
+    /**
+     * @param string $dashboardTitleImage
+     * @param string $dashboardFavicon
+     */
+    public function __construct ( string $dashboardTitleImage, string $dashboardFavicon )
+    {
+        $this->dashboardTitleImage = $dashboardTitleImage;
+        $this->dashboardFavicon = $dashboardFavicon;
+    }
+
+    /**
      * @Route("/admin", name="admin")
      */
     public function index (): Response
     {
         $adminUrlGenerator = $this->container->get( AdminUrlGenerator::class );
 
-        return $this->redirect( $adminUrlGenerator->setController( PlayerCrudController::class )->generateUrl() );
+        return $this->redirect( $adminUrlGenerator->setController( GameeCrudController::class )->generateUrl() );
     }
 
     public function configureDashboard (): Dashboard
     {
+        $titleImagInn = sprintf( '<img src="%s" alt"Logo">', $this->dashboardTitleImage );
+        $favimg = sprintf( '<img src="%s" alt"Favicon">', $this->dashboardFavicon );
         return Dashboard::new()
-            ->setTitle( 'FootballTable Project' );
+            ->setTitle( $titleImagInn )
+            ->setFaviconPath( $favimg )
+            ->setTextDirection( 'ltr' );
     }
 
     public function configureMenuItems (): iterable
     {
         return [
+            MenuItem::section( 'Players' ),
                 MenuItem::linkToCrud( 'Crear Player', 'fas fa-plus', Playerr::class )->setAction( Crud::PAGE_NEW ),
                 MenuItem::linkToCrud( 'Ver Players', 'fas fa-eye', Playerr::class ),
-                MenuItem::linkToCrud( 'Crear Usuario', 'fas fa-plus', User::class )->setAction( Crud::PAGE_NEW ),
-                MenuItem::linkToCrud( 'Ver Usuario', 'fas fa-eye', User::class ),
+            MenuItem::section( 'Users' ),
+                 MenuItem::linkToCrud( 'Ver Usuarios', 'fas fa-eye', User::class ),
+            MenuItem::section( 'Games' ),
+                MenuItem::linkToCrud( 'Crear Partido', 'fas fa-plus', Gamee::class )->setAction( Crud::PAGE_NEW ),
+                MenuItem::linkToCrud( 'Ver Partidos', 'fas fa-eye', Gamee::class ),
         ];
     }
 }

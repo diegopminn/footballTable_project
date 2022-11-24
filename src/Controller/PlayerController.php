@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Gamee;
 use App\Entity\Playerr;
 use App\Form\PlayerType;
+use App\Service\Game\GameManager;
+use App\Service\Player\PlayerManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,12 +19,15 @@ class PlayerController extends AbstractController
 {
     private $em;
 
+    protected GameManager $gameManager;
+
     /**
      * @param $em
      */
-    public function __construct ( EntityManagerInterface $em )
+    public function __construct ( EntityManagerInterface $em, GameManager $gameManager )
     {
         $this->em = $em;
+        $this->gameManager = $gameManager;
     }
 
     /**
@@ -31,7 +36,7 @@ class PlayerController extends AbstractController
     public function player (): Response
     {
         $players = $this->em->getRepository( Playerr::class )->findAllPlayers();
-        $gamesperplayer = $this->parseGames( $players );
+        $gamesperplayer = $this->gameManager->parseGames( $players );
         $newPlayer = new Playerr();
         $form = $this->createForm( PlayerType::class, $newPlayer );
 
@@ -103,16 +108,5 @@ class PlayerController extends AbstractController
                 'messages' => 'El formulario no es valido',
             ] );
         }
-    }
-
-    private function parseGames ( array $players ): array
-    {
-        foreach ($players as $player) {
-            $wins = $this->em->getRepository( Gamee::class )->wins_players( $player['id'] );
-            $loses = $this->em->getRepository( Gamee::class )->loses_players( $player['id'] );
-            $bajadita = $this->em->getRepository( Gamee::class )->bajaditas( $player['id'] );
-            $parseGames[$player['name']] = array_merge( $wins, $loses, $bajadita );
-        }
-        return $parseGames;
     }
 }

@@ -12,14 +12,38 @@ $(document).ready(function () {
     })
     $("#form_game").on("submit", function (e) {
         e.preventDefault();
-        $.post(Routing.generate('app_newgame'), $(this).serialize(), function (response) {
-            if (response.status == 'ok') {
-                Swal.fire(Translator.trans('swal.congrats'), Translator.trans('swal.save_success'), 'success');
-                //$("#form_game").trigger('reset');
-                $("#game_blueGols").val(0);
-                $("#game_redGols").val(0);
-            } else {
-                Swal.fire('Oooops...', response.message, 'error');
+
+        var formData = new FormData();
+        formData.append("upload[file]", document.getElementById("game_file").files[0]);
+
+        // $.post(Routing.generate('app_newgame', {"formData": formData}), $(this).serialize(), function (response) {
+        //     if (response.status == 'ok') {
+        //         console.log(formData);
+        //         Swal.fire(Translator.trans('swal.congrats'), Translator.trans('swal.save_success'), 'success');
+        //         //$("#form_game").trigger('reset');
+        //         $("#game_blueGols").val(0);
+        //         $("#game_redGols").val(0);
+        //     } else {
+        //         console.log(formData);
+        //         Swal.fire('Oooops...', response.message, 'error');
+        //     }
+        // });
+
+        /*TODO HAY QUE HACER UN POST EN EL QUE PUEDAS MANDAR UN VIDEO*/
+
+        const route = Routing.generate('app_newgame');
+        const data = new FormData(this);
+        console.log(data);
+        $.ajax({
+            url: route,
+            data: data,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function (data) {
+                if (data.status === 'ok') {
+                    Swal.fire(Translator.trans('swal.congrats'), Translator.trans('swal.save_success'), 'success');
+                }
             }
         });
 

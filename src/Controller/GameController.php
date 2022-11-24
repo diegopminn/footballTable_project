@@ -4,26 +4,33 @@ namespace App\Controller;
 
 use App\Entity\Gamee;
 use App\Form\GameType;
+use App\Service\Game\GameManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GameController extends AbstractController
 {
     private $em;
 
+    protected GameManager $gameManager;
+
     /**
-     * @param $em
+     * @param EntityManagerInterface $em
+     * @param GameManager $gameManager
      */
-    public function __construct ( EntityManagerInterface $em )
+    public function __construct ( EntityManagerInterface $em, GameManager $gameManager )
     {
         $this->em = $em;
+        $this->gameManager = $gameManager;
     }
 
     /**
@@ -51,10 +58,87 @@ class GameController extends AbstractController
     }
 
     /**
+     * @Route("/newgame",
+     *     options={"expose"=true},
+     *     name="app_newgame",
+     *     condition="request.isXmlHttpRequest()",
+     *     methods = {"POST"}
+     * )
+     */
+    public function ajaxGame ( Request $request, TranslatorInterface $translator, SluggerInterface $slugger ): JsonResponse
+    {
+        try {
+            $item = new Gamee();
+            $form = $this->createForm( GameType::class, $item );
+            $form->handleRequest( $request );
+            $file = $form->get( 'file' )->getData();
+
+            if ( $form->isSubmitted() && $form->isValid() ) {
+
+                if ( !$item->getBlueGols() && !$item->getRedGols() ) {
+                    return new JsonResponse( [
+                        'status' => 'ko',
+                        'message' => $translator->trans( 'swal.error_gol' )
+                    ] );
+                }
+
+                if ( !$this->gameManager->checkGames( $item ) ) {
+                    return new JsonResponse( [
+                        'status' => 'ko',
+                        'message' => $translator->trans( 'swal.error_norepeat' )
+                    ] );
+                }
+
+                if ( $this->gameManager->checkGoles( $item ) ) {
+                    $this->em->persist( $item );
+                    $this->em->flush();
+                    return new JsonResponse( [
+                        'status' => 'ok',
+                        'item_id' => $item->getId(),
+                    ] );
+                } else {
+                    if ( $file ) {
+                        $originalFilename = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
+                        $safeFilename = $slugger->slug( $originalFilename );
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+                        try {
+                            $file->move(
+                                $this->getParameter( 'files_directory' ),
+                                $newFilename
+                            );
+                            $item->setFile( $newFilename );
+                            $this->em->persist( $item );
+                            $this->em->flush();
+                            return new JsonResponse( [
+                                'status' => 'ok',
+                                'item_id' => $item->getId(),
+                            ] );
+                        } catch (FileException $e) {
+                            return new JsonResponse( [
+                                'status' => 'ko',
+                                'message' => $translator->trans( 'swal.error_file' )
+                            ] );
+                        }
+                    }
+                }
+            }
+            return new JsonResponse( [
+                'status' => 'ko',
+                'messages' => 'No valid form'
+            ] );
+        } catch (Exception $e) {
+            return new JsonResponse( [
+                'status' => 'error',
+                'messages' => 'El formulario no es valido',
+            ] );
+        }
+    }
+
+    /**
      * @Route("/games/season/{year}/{startMonth}-{endMonth}", name="app_games_seasons")
      * @throws Exception
      */
-    public function gamesSeason ( Request $request, PaginatorInterface $paginator, string $year, string $startMonth, string $endMonth  ): Response
+    public function gamesSeason ( Request $request, PaginatorInterface $paginator, string $year, string $startMonth, string $endMonth ): Response
     {
         $form = $this->createForm( GameType::class );
         $startDate = (new \DateTime( $year . "-" . $startMonth ))->modify( 'first day of this month 00:00:00' );
@@ -100,27 +184,25 @@ class GameController extends AbstractController
                         'status' => 'ko',
                         'message' => $translator->trans( 'swal.error_gol' )
                     ] );
-                } else {
-                    if ( !$this->checkGames( $item ) ) {
-                        return new JsonResponse( [
-                            'status' => 'ko',
-                            'message' => $translator->trans( 'swal.error_norepeat' )
-                        ] );
-                    } else {
-                        if ( $this->checkGoles( $item ) ) {
-                            $this->em->flush();
-                            return new JsonResponse( [
-                                'status' => 'ok',
-                                'item_id' => $item->getId(),
-                            ] );
-                        }
-                        $this->em->flush();
-                        return new JsonResponse( [
-                            'status' => 'ok',
-                            'item_id' => $item->getId(),
-                        ] );
-                    }
                 }
+                if ( !$this->gameManager->checkGames( $item ) ) {
+                    return new JsonResponse( [
+                        'status' => 'ko',
+                        'message' => $translator->trans( 'swal.error_norepeat' )
+                    ] );
+                }
+                if ( $this->gameManager->checkGoles( $item ) ) {
+                    $this->em->flush();
+                    return new JsonResponse( [
+                        'status' => 'ok',
+                        'item_id' => $item->getId(),
+                    ] );
+                }
+                $this->em->flush();
+                return new JsonResponse( [
+                    'status' => 'ok',
+                    'item_id' => $item->getId(),
+                ] );
             } else {
                 return new JsonResponse( [
                     'status' => 'ko',
@@ -157,30 +239,6 @@ class GameController extends AbstractController
                 'status' => 'error',
                 'messages' => 'El formulario no es valido',
             ] );
-        }
-    }
-
-    private function checkGames ( Gamee $item )
-    {
-        if ( $item->getBlueForward()->getname() == $item->getRedForward()->getname() or $item->getBlueForward()->getname() == $item->getRedDefense()->getname() ) {
-            return false;
-        }
-        return true;
-    }
-
-    private function checkGoles ( Gamee $item )
-    {
-        if ( $item->getBlueGols() == 1 && $item->getRedGols() == 6 ) {
-            $item->setBlueGols( 0 );
-            $item->setRedGols( 5 );
-            return true;
-        } else {
-            if ( $item->getBlueGols() == 6 && $item->getRedGols() == 1 ) {
-                $item->setBlueGols( 5 );
-                $item->setRedGols( 0 );
-                return true;
-            }
-            return false;
         }
     }
 }
