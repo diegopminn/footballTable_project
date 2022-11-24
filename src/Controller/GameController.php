@@ -73,59 +73,74 @@ class GameController extends AbstractController
             $form->handleRequest( $request );
             $file = $form->get( 'file' )->getData();
 
-            if ( $form->isSubmitted() && $form->isValid() ) {
+            if ( !$form->isSubmitted() || !$form->isValid() ) {
+                return new JsonResponse( [
+                    'status' => 'ko',
+                    'messages' => 'No valid form'
+                ] );
+            }
 
-                if ( !$item->getBlueGols() && !$item->getRedGols() ) {
-                    return new JsonResponse( [
-                        'status' => 'ko',
-                        'message' => $translator->trans( 'swal.error_gol' )
-                    ] );
-                }
+            if ( !$item->getBlueGols() && !$item->getRedGols() ) {
+                return new JsonResponse( [
+                    'status' => 'ko',
+                    'message' => $translator->trans( 'swal.error_gol' )
+                ] );
+            }
 
-                if ( !$this->gameManager->checkGames( $item ) ) {
-                    return new JsonResponse( [
-                        'status' => 'ko',
-                        'message' => $translator->trans( 'swal.error_norepeat' )
-                    ] );
-                }
+            if ( !$this->gameManager->checkGames( $item ) ) {
+                return new JsonResponse( [
+                    'status' => 'ko',
+                    'message' => $translator->trans( 'swal.error_norepeat' )
+                ] );
+            }
 
-                if ( $this->gameManager->checkGoles( $item ) ) {
+            if ( $this->gameManager->convertSixOneToFiveCero( $item ) ) {
+                $this->em->persist( $item );
+                $this->em->flush();
+                return new JsonResponse( [
+                    'status' => 'ok',
+                    'item_id' => $item->getId(),
+                ] );
+            }
+            if ( $this->gameManager->checkIfSevenCero( $item ) ) {
+                if ( $file ) {
+                    $originalFilename = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
+                    $safeFilename = $slugger->slug( $originalFilename );
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+                    try {
+                        $file->move(
+                            $this->getParameter( 'files_directory' ),
+                            $newFilename
+                        );
+                        $item->setFile( $newFilename );
+                        $this->em->persist( $item );
+                        $this->em->flush();
+                        return new JsonResponse( [
+                            'status' => 'ok',
+                            'item_id' => $item->getId(),
+                        ] );
+                    } catch (FileException $e) {
+                        return new JsonResponse( [
+                            'status' => 'ko',
+                            'message' => $translator->trans( 'swal.error_file' )
+                        ] );
+                    }
+                } else {
                     $this->em->persist( $item );
                     $this->em->flush();
                     return new JsonResponse( [
                         'status' => 'ok',
                         'item_id' => $item->getId(),
                     ] );
-                } else {
-                    if ( $file ) {
-                        $originalFilename = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
-                        $safeFilename = $slugger->slug( $originalFilename );
-                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
-                        try {
-                            $file->move(
-                                $this->getParameter( 'files_directory' ),
-                                $newFilename
-                            );
-                            $item->setFile( $newFilename );
-                            $this->em->persist( $item );
-                            $this->em->flush();
-                            return new JsonResponse( [
-                                'status' => 'ok',
-                                'item_id' => $item->getId(),
-                            ] );
-                        } catch (FileException $e) {
-                            return new JsonResponse( [
-                                'status' => 'ko',
-                                'message' => $translator->trans( 'swal.error_file' )
-                            ] );
-                        }
-                    }
                 }
+            } else {
+                $this->em->persist( $item );
+                $this->em->flush();
+                return new JsonResponse( [
+                    'status' => 'ok',
+                    'item_id' => $item->getId(),
+                ] );
             }
-            return new JsonResponse( [
-                'status' => 'ko',
-                'messages' => 'No valid form'
-            ] );
         } catch (Exception $e) {
             return new JsonResponse( [
                 'status' => 'error',
@@ -191,7 +206,7 @@ class GameController extends AbstractController
                         'message' => $translator->trans( 'swal.error_norepeat' )
                     ] );
                 }
-                if ( $this->gameManager->checkGoles( $item ) ) {
+                if ( $this->gameManager->convertSixOneToFiveCero( $item ) ) {
                     $this->em->flush();
                     return new JsonResponse( [
                         'status' => 'ok',

@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Gamee;
 use App\Entity\Playerr;
 use App\Form\PlayerType;
 use App\Service\Game\GameManager;
-use App\Service\Player\PlayerManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

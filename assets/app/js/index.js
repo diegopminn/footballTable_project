@@ -1,39 +1,29 @@
 $(document).ready(function () {
 
-   // $('.js-example-basic-single').select2();
+    // $('.js-example-basic-single').select2();
+    //TODO FUNCIONA PERO SOLO CUANDO RESETEAS LA PÁGINA, SE PUEDE HACER?
+    $('#game_blueGols').each(function () {
+        if (parseInt($(this).val(), 0) === 7) {
+            $("#game_file").show();
+        } else {
+            $("#game_file").hide();
+        }
+    });
 
     $("#rotate").on('click', function (e) {
         e.preventDefault();
         swap('game_blueForward', 'game_blueDefense');
     })
+
     $("#rotate2").on('click', function (e) {
         e.preventDefault()
         swap('game_redForward', 'game_redDefense');
     })
+
     $("#form_game").on("submit", function (e) {
         e.preventDefault();
-
-        var formData = new FormData();
-        formData.append("upload[file]", document.getElementById("game_file").files[0]);
-
-        // $.post(Routing.generate('app_newgame', {"formData": formData}), $(this).serialize(), function (response) {
-        //     if (response.status == 'ok') {
-        //         console.log(formData);
-        //         Swal.fire(Translator.trans('swal.congrats'), Translator.trans('swal.save_success'), 'success');
-        //         //$("#form_game").trigger('reset');
-        //         $("#game_blueGols").val(0);
-        //         $("#game_redGols").val(0);
-        //     } else {
-        //         console.log(formData);
-        //         Swal.fire('Oooops...', response.message, 'error');
-        //     }
-        // });
-
-        /*TODO HAY QUE HACER UN POST EN EL QUE PUEDAS MANDAR UN VIDEO*/
-
         const route = Routing.generate('app_newgame');
         const data = new FormData(this);
-        console.log(data);
         $.ajax({
             url: route,
             data: data,
@@ -43,10 +33,13 @@ $(document).ready(function () {
             success: function (data) {
                 if (data.status === 'ok') {
                     Swal.fire(Translator.trans('swal.congrats'), Translator.trans('swal.save_success'), 'success');
+                    $("#game_blueGols").val(0);
+                    $("#game_redGols").val(0);
+                } else {
+                    Swal.fire('Oooops...', data.message, 'error');
                 }
             }
         });
-
         return false;
     });
 });

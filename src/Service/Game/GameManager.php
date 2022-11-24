@@ -6,9 +6,10 @@ namespace App\Service\Game;
 use App\Entity\Gamee;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GameManager {
-
+class GameManager
+{
     private $em;
+
     /**
      * @param EntityManagerInterface $em
      */
@@ -17,7 +18,7 @@ class GameManager {
         $this->em = $em;
     }
 
-    public function checkGoles ( Gamee $item )
+    public function convertSixOneToFiveCero ( Gamee $item )
     {
         if ( $item->getBlueGols() == 1 && $item->getRedGols() == 6 ) {
             $item->setBlueGols( 0 );
@@ -35,10 +36,19 @@ class GameManager {
 
     public function checkGames ( Gamee $item )
     {
-        if ( $item->getBlueForward()->getname() == $item->getRedForward()->getname() or $item->getBlueForward()->getname() == $item->getRedDefense()->getname() ) {
+        if ( $item->getBlueForward()->getname() == $item->getRedForward()->getname() or $item->getBlueForward()->getname() == $item->getRedDefense()->getname() or
+            $item->getBlueDefense()->getname() == $item->getRedForward()->getname() or $item->getBlueDefense()->getname() == $item->getRedDefense()->getname()) {
             return false;
         }
         return true;
+    }
+
+    public function checkIfSevenCero ( Gamee $item )
+    {
+        if ( $item->getBlueGols() == 7 || $item->getRedGols() == 7 ) {
+            return true;
+        }
+        return false;
     }
 
     public function parseGames ( array $players ): array
