@@ -1,14 +1,20 @@
 $(document).ready(function () {
 
     // $('.js-example-basic-single').select2();
-    //TODO FUNCIONA PERO SOLO CUANDO RESETEAS LA PÁGINA, SE PUEDE HACER?
-    $('#game_blueGols').each(function () {
-        if (parseInt($(this).val(), 0) === 7) {
+
+    $('#game_blueGols').on('input', function (e) {
+        if (parseInt($('#game_blueGols').val()) === 7) {
             $("#game_file").show();
         } else {
             $("#game_file").hide();
         }
-    });
+    })
+
+    if (parseInt($('#game_blueGols').val()) === 7) {
+        $("#game_file").show();
+    } else {
+        $("#game_file").hide();
+    }
 
     $("#rotate").on('click', function (e) {
         e.preventDefault();

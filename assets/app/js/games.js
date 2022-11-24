@@ -1,16 +1,17 @@
 $(document).ready(function () {
 
-    // //TODO TENGO QUE SACAR ESTO DEL BOTON AQUI NO TIENE SENTIDO, PERO ESTO ES UNA APROXIMACIÓN DE COMO DEBERIA HACERSE
+    //TODO NO CONSIGO LA DATA DE CADA PARTIDO
+
     // var date = new Date();
-    // const data_from_database = $(this).parents('tr').children()[4].getAttribute('data-date');
+    // const data_from_database = $(this).find('tr .dateID').getAttribute('data-date');
     // console.log(data_from_database)
     // console.log("current date: " + date)
     //
-    // var FIVE_MIN=5*60*1000;
-    // if((date - new Date(data_from_database)) > FIVE_MIN) {
-    //     document.getElementsByClassName('edit-btn').visibility = 'hidden';
-    // }else {
-    //     document.getElementById('togglee').visibility = 'visible';
+    // var FIVE_MIN = 5 * 60 * 1000;
+    // if ((date - new Date(data_from_database)) > FIVE_MIN) {
+    //     $("#edit-btn").hide();
+    // } else {
+    //     $("#edit-btn").show();
     // }
 
     $(".delete-btn").on("click", function () {
@@ -31,9 +32,6 @@ $(document).ready(function () {
                     .fail(_ => {
                         console.error('Algo ha fallado');
                     })
-                    .always(_ => {
-                        //loadingAction('hide');
-                    });
             }
         })
     })
