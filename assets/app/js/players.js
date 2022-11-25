@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $("#form_newPlayer").on("submit", function (e) {
         e.preventDefault();
         $.post(Routing.generate('app_new_player'), $(this).serialize(), function (response) {
@@ -12,7 +13,7 @@ $(document).ready(function () {
         return false;
     });
 
-    $(".delete-btn").on("click", function (){
+    $(".delete-btn").on("click", function () {
         //const name = this.dataset.name;
         const name = $(this).data('name');
         Swal.fire({
@@ -22,10 +23,10 @@ $(document).ready(function () {
             confirmButtonText: 'Guardar',
             denyButtonText: `No guardar`,
         }).then(result => {
-            if (result.value){
-                const jqxhr = $.post( Routing.generate('app_delete_player', {name}))
+            if (result.value) {
+                const jqxhr = $.post(Routing.generate('app_delete_player', {name}))
                     .done(result => {
-                        Swal.fire(('El jugador' + name + ' se ha borrado correctamente.') , 'success');
+                        Swal.fire(('El jugador' + name + ' se ha borrado correctamente.'), 'success');
                     })
                     .fail(_ => {
                         console.error('Algo ha fallado');

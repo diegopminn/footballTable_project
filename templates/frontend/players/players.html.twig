@@ -24,7 +24,6 @@
                                 <th class="col">Part.totales</th>
                                 <th class="col">KDA</th>
                                 <th class="col">Bajaditas</th>
-                                <th class="col"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -38,11 +37,13 @@
                                     {% set division = (player.Victorias and totalGames ? player.Victorias / totalGames : 0) %}
                                     <td class="col"> {{ division | slice (0, 4) }} </td>
                                     <td class="col">{{ player.Bajaditas }} </td>
-                                    <td class="col">
-                                        <button class="btn  delete-btn" data-name="{{ key }}"><i
-                                                    class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </td>
+                                    {% if totalGames == 0 %}
+                                        <td class="col">
+                                            <button class="btn  delete-btn" data-name="{{ key }}"><i
+                                                        class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                             </tbody>
