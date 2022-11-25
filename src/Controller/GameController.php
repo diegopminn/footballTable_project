@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Gamee;
+use App\Entity\Game;
 use App\Form\GameType;
 use App\Service\Game\GameManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,7 +38,7 @@ class GameController extends AbstractController
      */
     public function games ( Request $request, PaginatorInterface $paginator, ?string $year = null ): Response
     {
-        $lastsGames = $this->em->getRepository( Gamee::class )->getLastsGame();
+        $lastsGames = $this->em->getRepository( Game::class )->getLastsGame();
         $form = $this->createForm( GameType::class );
         if ( $year ) {
             $currentYear = $year;
@@ -68,7 +68,7 @@ class GameController extends AbstractController
     public function ajaxGame ( Request $request, TranslatorInterface $translator, SluggerInterface $slugger ): JsonResponse
     {
         try {
-            $item = new Gamee();
+            $item = new Game();
             $form = $this->createForm( GameType::class, $item );
             $form->handleRequest( $request );
             $file = $form->get( 'file' )->getData();
@@ -158,7 +158,7 @@ class GameController extends AbstractController
         $form = $this->createForm( GameType::class );
         $startDate = (new \DateTime( $year . "-" . $startMonth ))->modify( 'first day of this month 00:00:00' );
         $endDate = (new \DateTime( $year . "-" . $endMonth ))->modify( 'last day of this month 23:59:59' );
-        $query = $this->em->getRepository( Gamee::class )->getDates( $startDate, $endDate );
+        $query = $this->em->getRepository( Game::class )->getDates( $startDate, $endDate );
         if ( $year ) {
             $currentYear = $year;
         } else {
@@ -189,7 +189,7 @@ class GameController extends AbstractController
     public function updateGame ( Request $request, TranslatorInterface $translator, $id ): JsonResponse
     {
         try {
-            $item = $this->em->getRepository( Gamee::class )->findOneBySomeField( $id );
+            $item = $this->em->getRepository( Game::class )->findOneBySomeField( $id );
             $form = $this->createForm( GameType::class, $item );
             $form->handleRequest( $request );
             if ( $form->isSubmitted() && $form->isValid() ) {
@@ -242,7 +242,7 @@ class GameController extends AbstractController
     public function deleteGame ( $id ): JsonResponse
     {
         try {
-            $item = $this->em->getRepository( Gamee::class )->findOneBySomeField( $id );
+            $item = $this->em->getRepository( Game::class )->findOneBySomeField( $id );
             $this->em->remove( $item );
             $this->em->flush();
             return new JsonResponse(

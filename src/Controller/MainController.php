@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Gamee;
+use App\Entity\Game;
 use App\Entity\Playerr;
 use App\Form\GameType;
 use App\Service\Game\GameManager;
@@ -38,9 +38,9 @@ class MainController extends AbstractController
     public function index (): Response
     {
         $players = $this->em->getRepository( Playerr::class )->findAllPlayers();
-        $lastGame = $this->em->getRepository( Gamee::class )->getLastGame();
+        $lastGame = $this->em->getRepository( Game::class )->getLastGame();
         $gamesPerPlayer = $this->gameManager->parseGames( $players );
-        $game = new Gamee();
+        $game = new Game();
         $form = $this->createForm( GameType::class, $game );
 
         return $this->render( 'frontend/index/index.html.twig', [

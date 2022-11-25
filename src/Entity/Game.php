@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\GameeRepository;
+use App\Repository\GameRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Monolog\DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=GameeRepository::class)
+ * @ORM\Entity(repositoryClass=GameRepository::class)
  */
-class Gamee
+class Game
 {
     /**
      * @var null|int
@@ -21,28 +21,28 @@ class Gamee
     private $id;
 
     /**
-     * @var null|Gamee
+     * @var null|Game
      * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="bluesForward")
      * @ORM\JoinColumn(nullable=false)
      */
     private $blueForward;
 
     /**
-     * @var null|Gamee
+     * @var null|Game
      * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="bluesDefense")
      * @ORM\JoinColumn(nullable=false)
      */
     private $blueDefense;
 
     /**
-     * @var null|Gamee
+     * @var null|Game
      * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="redsForward")
      * @ORM\JoinColumn(nullable=false)
      */
     private $redForward;
 
     /**
-     * @var null|Gamee
+     * @var null|Game
      * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="redsDefense")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -179,9 +179,9 @@ class Gamee
 
     /**
      * @param \DateTimeImmutable $createdAt
-     * @return Gamee
+     * @return Game
      */
-    public function setCreatedAt ( \DateTimeImmutable $createdAt ): Gamee
+    public function setCreatedAt ( \DateTimeImmutable $createdAt ): Game
     {
         $this->createdAt = $createdAt;
         return $this;

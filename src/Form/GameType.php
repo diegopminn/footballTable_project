@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Gamee;
+use App\Entity\Game;
 use App\Entity\Playerr;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -63,7 +63,7 @@ class GameType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Gamee::class,
+            'data_class' => Game::class,
             'csrf_protection' => false
         ]);
     }

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Gamee;
+use App\Entity\Game;
 use App\Entity\Playerr;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -42,7 +42,7 @@ class DashboardController extends AbstractDashboardController
     {
         $adminUrlGenerator = $this->container->get( AdminUrlGenerator::class );
 
-        return $this->redirect( $adminUrlGenerator->setController( GameeCrudController::class )->generateUrl() );
+        return $this->redirect( $adminUrlGenerator->setController( GameCrudController::class )->generateUrl() );
     }
 
     public function configureDashboard (): Dashboard
@@ -64,8 +64,8 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section( 'Users' ),
                  MenuItem::linkToCrud( 'Ver Usuarios', 'fas fa-eye', User::class ),
             MenuItem::section( 'Games' ),
-                MenuItem::linkToCrud( 'Crear Partido', 'fas fa-plus', Gamee::class )->setAction( Crud::PAGE_NEW ),
-                MenuItem::linkToCrud( 'Ver Partidos', 'fas fa-eye', Gamee::class ),
+                MenuItem::linkToCrud( 'Crear Partido', 'fas fa-plus', Game::class )->setAction( Crud::PAGE_NEW ),
+                MenuItem::linkToCrud( 'Ver Partidos', 'fas fa-eye', Game::class ),
         ];
     }
 }

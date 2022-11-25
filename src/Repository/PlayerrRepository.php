@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Gamee;
+use App\Entity\Game;
 use App\Entity\Playerr;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -59,8 +59,8 @@ class PlayerrRepository extends ServiceEntityRepository
     public function wins_loses_players ()
     {
         return $this->createQueryBuilder( 'p' )
-            ->select( 'gamee.blueGols')
-            ->join(Gamee::class, 'gamee')
+            ->select( 'game.blueGols')
+            ->join(Game::class, 'game')
             ->getQuery()
             ->getResult();
     }

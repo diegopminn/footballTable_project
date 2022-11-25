@@ -31,26 +31,26 @@ class Playerr
     private $name;
 
     /**
-     * @var null|Gamee
-     * @ORM\OneToMany(targetEntity=Gamee::class, mappedBy="blueForward")
+     * @var null|Game
+     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="blueForward")
      */
     private $bluesForward;
 
     /**
-     * @var null|Gamee
-     * @ORM\OneToMany(targetEntity=Gamee::class, mappedBy="redDefense")
+     * @var null|Game
+     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="redDefense")
      */
     private $redsDefense;
 
     /**
-     * @var null|Gamee
-     * @ORM\OneToMany(targetEntity=Gamee::class, mappedBy="redForward")
+     * @var null|Game
+     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="redForward")
      */
     private $redsForward;
 
     /**
-     * @var null|Gamee
-     * @ORM\OneToMany(targetEntity=Gamee::class, mappedBy="blueDefense")
+     * @var null|Game
+     * @ORM\OneToMany(targetEntity=Game::class, mappedBy="blueDefense")
      */
     private $bluesDefense;
 
@@ -91,72 +91,72 @@ class Playerr
     }
 
     /**
-     * @return Gamee|null
+     * @return Game|null
      */
-    public function getBluesForward (): ?Gamee
+    public function getBluesForward (): ?Game
     {
         return $this->bluesForward;
     }
 
     /**
-     * @param Gamee|null $bluesForward
+     * @param Game|null $bluesForward
      * @return Playerr
      */
-    public function setBluesForward ( ?Gamee $bluesForward ): Playerr
+    public function setBluesForward ( ?Game $bluesForward ): Playerr
     {
         $this->bluesForward = $bluesForward;
         return $this;
     }
 
     /**
-     * @return Gamee|null
+     * @return Game|null
      */
-    public function getRedsDefense (): ?Gamee
+    public function getRedsDefense (): ?Game
     {
         return $this->redsDefense;
     }
 
     /**
-     * @param Gamee|null $redsDefense
+     * @param Game|null $redsDefense
      * @return Playerr
      */
-    public function setRedsDefense ( ?Gamee $redsDefense ): Playerr
+    public function setRedsDefense ( ?Game $redsDefense ): Playerr
     {
         $this->redsDefense = $redsDefense;
         return $this;
     }
 
     /**
-     * @return Gamee|null
+     * @return Game|null
      */
-    public function getRedsForward (): ?Gamee
+    public function getRedsForward (): ?Game
     {
         return $this->redsForward;
     }
 
     /**
-     * @param Gamee|null $redsForward
+     * @param Game|null $redsForward
      * @return Playerr
      */
-    public function setRedsForward ( ?Gamee $redsForward ): Playerr
+    public function setRedsForward ( ?Game $redsForward ): Playerr
     {
         $this->redsForward = $redsForward;
         return $this;
     }
 
     /**
-     * @return Gamee|null
+     * @return Game|null
      */
-    public function getBluesDefense (): ?Gamee
+    public function getBluesDefense (): ?Game
     {
         return $this->bluesDefense;
     }
 
     /**
-     * @param Gamee|null $bluesDefense
+     * @param Game|null $bluesDefense
      * @return Playerr
      */
-    public function setBluesDefense ( ?Gamee $bluesDefense ): Playerr
+    public function setBluesDefense ( ?Game $bluesDefense ): Playerr
     {
         $this->bluesDefense = $bluesDefense;
         return $this;

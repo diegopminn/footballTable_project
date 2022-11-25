@@ -2,16 +2,16 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Gamee;
+use App\Entity\Game;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
-class GameeCrudController extends AbstractCrudController
+class GameCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Gamee::class;
+        return Game::class;
     }
 
     public function configureFields(string $pageName): iterable

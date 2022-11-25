@@ -2,28 +2,28 @@
 
 namespace App\Repository;
 
-use App\Entity\Gamee;
+use App\Entity\Game;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Gamee>
+ * @extends ServiceEntityRepository<Game>
  *
- * @method Gamee|null find($id, $lockMode = null, $lockVersion = null)
- * @method Gamee|null findOneBy(array $criteria, array $orderBy = null)
- * @method Gamee[]    findAll()
- * @method Gamee[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Game|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Game|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Game[]    findAll()
+ * @method Game[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class GameeRepository extends ServiceEntityRepository
+class GameRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Gamee::class);
+        parent::__construct($registry, Game::class);
     }
 
-    public function add(Gamee $entity, bool $flush = false): void
+    public function add( Game $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -32,7 +32,7 @@ class GameeRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Gamee $entity, bool $flush = false): void
+    public function remove( Game $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -47,9 +47,9 @@ class GameeRepository extends ServiceEntityRepository
      */
     public function getLastGame ()
     {
-        return $this->createQueryBuilder( 'gamee' )
-            ->select( 'gamee' )
-            ->orderBy( 'gamee.id', 'DESC' )
+        return $this->createQueryBuilder( 'game' )
+            ->select( 'game' )
+            ->orderBy( 'game.id', 'DESC' )
             ->setMaxResults( 1 )
             ->getQuery()
             ->getResult();
@@ -61,9 +61,9 @@ class GameeRepository extends ServiceEntityRepository
      */
     public function getLastsGame ()
     {
-        return $this->createQueryBuilder( 'gamee' )
-            ->select( 'gamee' )
-            ->orderBy( 'gamee.id', 'DESC' )
+        return $this->createQueryBuilder( 'game' )
+            ->select( 'game' )
+            ->orderBy( 'game.id', 'DESC' )
             ->getQuery()
             ->getResult();
     }
@@ -74,10 +74,10 @@ class GameeRepository extends ServiceEntityRepository
      */
     public function getDates ( \DateTime $StartDate, \DateTime $EndDate )
     {
-        return $this->createQueryBuilder( 'gamee' )
-            ->where( 'gamee.createdAt >= :StartDate ' )
-            ->andWhere( 'gamee.createdAt < :EndDate ' )
-            ->orderBy( 'gamee.createdAt', 'DESC' )
+        return $this->createQueryBuilder( 'game' )
+            ->where( 'game.createdAt >= :StartDate ' )
+            ->andWhere( 'game.createdAt < :EndDate ' )
+            ->orderBy( 'game.createdAt', 'DESC' )
             ->setParameter( 'StartDate', $StartDate )
             ->setParameter( 'EndDate', $EndDate )
             ->getQuery()
@@ -127,7 +127,7 @@ class GameeRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Gamee[] Returns an array of Gamee objects
+//     * @return Game[] Returns an array of Game objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -141,7 +141,7 @@ class GameeRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findOneBySomeField($value): ?Gamee
+    public function findOneBySomeField($value): ?Game
     {
         return $this->createQueryBuilder('g')
             ->andWhere('g.id = :val')
