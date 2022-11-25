@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\GameRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Monolog\DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,28 +21,28 @@ class Game
 
     /**
      * @var null|Game
-     * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="bluesForward")
+     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="bluesForward")
      * @ORM\JoinColumn(nullable=false)
      */
     private $blueForward;
 
     /**
      * @var null|Game
-     * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="bluesDefense")
+     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="bluesDefense")
      * @ORM\JoinColumn(nullable=false)
      */
     private $blueDefense;
 
     /**
      * @var null|Game
-     * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="redsForward")
+     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="redsForward")
      * @ORM\JoinColumn(nullable=false)
      */
     private $redForward;
 
     /**
      * @var null|Game
-     * @ORM\ManyToOne(targetEntity=Playerr::class, inversedBy="redsDefense")
+     * @ORM\ManyToOne(targetEntity=Player::class, inversedBy="redsDefense")
      * @ORM\JoinColumn(nullable=false)
      */
     private $redDefense;
@@ -92,77 +91,77 @@ class Game
     }
 
 
-    public function getId(): ?int
+    public function getId (): ?int
     {
         return $this->id;
     }
 
-    public function getBlueForward(): ?Playerr
+    public function getBlueForward (): ?Player
     {
         return $this->blueForward;
     }
 
-    public function setBlueForward(?Playerr $blueForward): self
+    public function setBlueForward ( ?Player $blueForward ): self
     {
         $this->blueForward = $blueForward;
 
         return $this;
     }
 
-    public function getBlueDefense(): ?Playerr
+    public function getBlueDefense (): ?Player
     {
         return $this->blueDefense;
     }
 
-    public function setBlueDefense(?Playerr $blueDefense): self
+    public function setBlueDefense ( ?Player $blueDefense ): self
     {
         $this->blueDefense = $blueDefense;
 
         return $this;
     }
 
-    public function getRedForward(): ?Playerr
+    public function getRedForward (): ?Player
     {
         return $this->redForward;
     }
 
-    public function setRedForward(?Playerr $redForward): self
+    public function setRedForward ( ?Player $redForward ): self
     {
         $this->redForward = $redForward;
 
         return $this;
     }
 
-    public function getRedDefense(): ?Playerr
+    public function getRedDefense (): ?Player
     {
         return $this->redDefense;
     }
 
-    public function setRedDefense(?Playerr $redDefense): self
+    public function setRedDefense ( ?Player $redDefense ): self
     {
         $this->redDefense = $redDefense;
 
         return $this;
     }
 
-    public function getBlueGols(): ?int
+    public function getBlueGols (): ?int
     {
         return $this->blueGols;
     }
 
-    public function setBlueGols(int $blueGols): self
+    public function setBlueGols ( int $blueGols ): self
     {
         $this->blueGols = $blueGols;
 
         return $this;
     }
 
-    public function getRedGols(): ?int
+    public function getRedGols (): ?int
     {
         return $this->redGols;
     }
 
-    public function setRedGols(int $redGols): self
+    public function setRedGols ( int $redGols ): self
     {
         $this->redGols = $redGols;
 
@@ -187,19 +186,15 @@ class Game
         return $this;
     }
 
-    public function getFile(): ?string
+    public function getFile (): ?string
     {
         return $this->file;
     }
 
-    public function setFile(?string $file): self
+    public function setFile ( ?string $file ): self
     {
         $this->file = $file;
 
         return $this;
     }
-
-
-
-
 }

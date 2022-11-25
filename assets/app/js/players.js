@@ -1,7 +1,6 @@
 $(document).ready(function () {
     $("#form_newPlayer").on("submit", function (e) {
         e.preventDefault();
-       // e.stopPropagation();
         $.post(Routing.generate('app_new_player'), $(this).serialize(), function (response) {
             if (response.status == 'ok') {
                 Swal.fire(Translator.trans('swal.congrats'), Translator.trans('swal.save_success'), 'success');
@@ -24,7 +23,6 @@ $(document).ready(function () {
             denyButtonText: `No guardar`,
         }).then(result => {
             if (result.value){
-                //loadingAction('show')
                 const jqxhr = $.post( Routing.generate('app_delete_player', {name}))
                     .done(result => {
                         Swal.fire(('El jugador' + name + ' se ha borrado correctamente.') , 'success');
@@ -32,13 +30,8 @@ $(document).ready(function () {
                     .fail(_ => {
                         console.error('Algo ha fallado');
                     })
-                    .always(_ => {
-                        //loadingAction('hide');
-                    });
             }
         })
     })
-
-
 })
 

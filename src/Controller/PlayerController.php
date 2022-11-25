@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Playerr;
+use App\Entity\Player;
 use App\Form\PlayerType;
 use App\Service\Game\GameManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +20,8 @@ class PlayerController extends AbstractController
     protected GameManager $gameManager;
 
     /**
-     * @param $em
+     * @param EntityManagerInterface $em
+     * @param GameManager $gameManager
      */
     public function __construct ( EntityManagerInterface $em, GameManager $gameManager )
     {
@@ -33,9 +34,9 @@ class PlayerController extends AbstractController
      */
     public function player (): Response
     {
-        $players = $this->em->getRepository( Playerr::class )->findAllPlayers();
+        $players = $this->em->getRepository( Player::class )->findAllPlayers();
         $gamesperplayer = $this->gameManager->parseGames( $players );
-        $newPlayer = new Playerr();
+        $newPlayer = new Player();
         $form = $this->createForm( PlayerType::class, $newPlayer );
 
         return $this->render( 'frontend/players/players.html.twig', [
@@ -56,12 +57,12 @@ class PlayerController extends AbstractController
     public function newPlayer ( Request $request ): JsonResponse
     {
         try {
-            $item = new Playerr();
+            $item = new Player();
             $form = $this->createForm( PlayerType::class, $item );
             $form->handleRequest( $request );
 
             if ( $form->isSubmitted() && $form->isValid() ) {
-                /** @var Playerr $item */
+                /** @var Player $item */
                 $item = $form->getData();
 
                 $this->em->persist( $item );
@@ -93,7 +94,7 @@ class PlayerController extends AbstractController
     public function deletePlayer ( string $name ): JsonResponse
     {
         try {
-            $item = $this->em->getRepository( Playerr::class )->findOneBySomeField( $name );
+            $item = $this->em->getRepository( Player::class )->findOneBySomeField( $name );
             $this->em->remove( $item );
             $this->em->flush();
             return new JsonResponse(

@@ -18,25 +18,25 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class GameRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct ( ManagerRegistry $registry )
     {
-        parent::__construct($registry, Game::class);
+        parent::__construct( $registry, Game::class );
     }
 
-    public function add( Game $entity, bool $flush = false): void
+    public function add ( Game $entity, bool $flush = false ): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist( $entity );
 
-        if ($flush) {
+        if ( $flush ) {
             $this->getEntityManager()->flush();
         }
     }
 
-    public function remove( Game $entity, bool $flush = false): void
+    public function remove ( Game $entity, bool $flush = false ): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->remove( $entity );
 
-        if ($flush) {
+        if ( $flush ) {
             $this->getEntityManager()->flush();
         }
     }
@@ -88,12 +88,12 @@ class GameRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function wins_players ($player)
+    public function wins_players ( $player )
     {
         return $this->createQueryBuilder( 'g' )
-            ->select('COUNT(g) as Victorias')
-            ->where('g.blueGols > g.redGols AND (g.blueForward = :player OR g.blueDefense = :player) OR g.blueGols < g.redGols AND (g.redForward = :player OR g.redDefense = :player)')
-            ->setParameter('player', $player)
+            ->select( 'COUNT(g) as Victorias' )
+            ->where( 'g.blueGols > g.redGols AND (g.blueForward = :player OR g.blueDefense = :player) OR g.blueGols < g.redGols AND (g.redForward = :player OR g.redDefense = :player)' )
+            ->setParameter( 'player', $player )
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -102,12 +102,12 @@ class GameRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function loses_players ($player)
+    public function loses_players ( $player )
     {
         return $this->createQueryBuilder( 'g' )
-            ->select('COUNT(g) as Derrotas')
-            ->where('g.blueGols < g.redGols AND (g.blueForward = :player OR g.blueDefense = :player) OR g.blueGols > g.redGols AND (g.redForward = :player OR g.redDefense = :player)')
-            ->setParameter('player', $player)
+            ->select( 'COUNT(g) as Derrotas' )
+            ->where( 'g.blueGols < g.redGols AND (g.blueForward = :player OR g.blueDefense = :player) OR g.blueGols > g.redGols AND (g.redForward = :player OR g.redDefense = :player)' )
+            ->setParameter( 'player', $player )
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -116,38 +116,22 @@ class GameRepository extends ServiceEntityRepository
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function bajaditas ($player)
+    public function bajaditas ( $player )
     {
         return $this->createQueryBuilder( 'g' )
-            ->select('COUNT(g) as Bajaditas')
-            ->where('g.blueGols = 0 AND g.redGols = 7 AND (g.blueForward = :player OR g.blueDefense = :player) OR g.redGols = 0 AND g.blueGols = 7 AND (g.redForward = :player OR g.redDefense = :player)')
-            ->setParameter('player', $player)
+            ->select( 'COUNT(g) as Bajaditas' )
+            ->where( 'g.blueGols = 0 AND g.redGols = 7 AND (g.blueForward = :player OR g.blueDefense = :player) OR g.redGols = 0 AND g.blueGols = 7 AND (g.redForward = :player OR g.redDefense = :player)' )
+            ->setParameter( 'player', $player )
             ->getQuery()
             ->getOneOrNullResult();
     }
 
-//    /**
-//     * @return Game[] Returns an array of Game objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-    public function findOneBySomeField($value): ?Game
+    public function findOneBySomeField ( $value ): ?Game
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.id = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder( 'g' )
+            ->andWhere( 'g.id = :val' )
+            ->setParameter( 'val', $value )
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 }

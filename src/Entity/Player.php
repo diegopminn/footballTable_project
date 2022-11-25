@@ -4,14 +4,14 @@ namespace App\Entity;
 
 use App\Entity\Traits\StatusTrait;
 use App\Entity\Traits\UUIDTrait;
-use App\Repository\PlayerrRepository;
+use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=PlayerrRepository::class)
+ * @ORM\Entity(repositoryClass=PlayerRepository::class)
  */
-class Playerr
+class Player
 {
     use StatusTrait, UUIDTrait;
 
@@ -64,9 +64,9 @@ class Playerr
 
     /**
      * @param int|null $id
-     * @return Playerr
+     * @return Player
      */
-    public function setId ( ?int $id ): Playerr
+    public function setId ( ?int $id ): Player
     {
         $this->id = $id;
         return $this;
@@ -82,9 +82,9 @@ class Playerr
 
     /**
      * @param string|null $name
-     * @return Playerr
+     * @return Player
      */
-    public function setname ( ?string $name ): Playerr
+    public function setname ( ?string $name ): Player
     {
         $this->name = $name;
         return $this;
@@ -100,9 +100,9 @@ class Playerr
 
     /**
      * @param Game|null $bluesForward
-     * @return Playerr
+     * @return Player
      */
-    public function setBluesForward ( ?Game $bluesForward ): Playerr
+    public function setBluesForward ( ?Game $bluesForward ): Player
     {
         $this->bluesForward = $bluesForward;
         return $this;
@@ -118,9 +118,9 @@ class Playerr
 
     /**
      * @param Game|null $redsDefense
-     * @return Playerr
+     * @return Player
      */
-    public function setRedsDefense ( ?Game $redsDefense ): Playerr
+    public function setRedsDefense ( ?Game $redsDefense ): Player
     {
         $this->redsDefense = $redsDefense;
         return $this;
@@ -136,9 +136,9 @@ class Playerr
 
     /**
      * @param Game|null $redsForward
-     * @return Playerr
+     * @return Player
      */
-    public function setRedsForward ( ?Game $redsForward ): Playerr
+    public function setRedsForward ( ?Game $redsForward ): Player
     {
         $this->redsForward = $redsForward;
         return $this;
@@ -154,14 +154,13 @@ class Playerr
 
     /**
      * @param Game|null $bluesDefense
-     * @return Playerr
+     * @return Player
      */
-    public function setBluesDefense ( ?Game $bluesDefense ): Playerr
+    public function setBluesDefense ( ?Game $bluesDefense ): Player
     {
         $this->bluesDefense = $bluesDefense;
         return $this;
     }
-
 
     public function __toString (): string
     {

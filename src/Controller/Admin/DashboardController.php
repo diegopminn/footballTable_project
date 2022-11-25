@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Game;
-use App\Entity\Playerr;
+use App\Entity\Player;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -59,8 +59,8 @@ class DashboardController extends AbstractDashboardController
     {
         return [
             MenuItem::section( 'Players' ),
-                MenuItem::linkToCrud( 'Crear Player', 'fas fa-plus', Playerr::class )->setAction( Crud::PAGE_NEW ),
-                MenuItem::linkToCrud( 'Ver Players', 'fas fa-eye', Playerr::class ),
+                MenuItem::linkToCrud( 'Crear Player', 'fas fa-plus', Player::class )->setAction( Crud::PAGE_NEW ),
+                MenuItem::linkToCrud( 'Ver Players', 'fas fa-eye', Player::class ),
             MenuItem::section( 'Users' ),
                  MenuItem::linkToCrud( 'Ver Usuarios', 'fas fa-eye', User::class ),
             MenuItem::section( 'Games' ),

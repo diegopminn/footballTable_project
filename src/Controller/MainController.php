@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Game;
-use App\Entity\Playerr;
+use App\Entity\Player;
 use App\Form\GameType;
 use App\Service\Game\GameManager;
 use App\Service\Player\PlayerManager;
@@ -37,7 +37,7 @@ class MainController extends AbstractController
      */
     public function index (): Response
     {
-        $players = $this->em->getRepository( Playerr::class )->findAllPlayers();
+        $players = $this->em->getRepository( Player::class )->findAllPlayers();
         $lastGame = $this->em->getRepository( Game::class )->getLastGame();
         $gamesPerPlayer = $this->gameManager->parseGames( $players );
         $game = new Game();

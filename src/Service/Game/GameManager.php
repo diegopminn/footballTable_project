@@ -37,7 +37,7 @@ class GameManager
     public function checkGames ( Game $item )
     {
         if ( $item->getBlueForward()->getname() == $item->getRedForward()->getname() or $item->getBlueForward()->getname() == $item->getRedDefense()->getname() or
-            $item->getBlueDefense()->getname() == $item->getRedForward()->getname() or $item->getBlueDefense()->getname() == $item->getRedDefense()->getname()) {
+            $item->getBlueDefense()->getname() == $item->getRedForward()->getname() or $item->getBlueDefense()->getname() == $item->getRedDefense()->getname() ) {
             return false;
         }
         return true;

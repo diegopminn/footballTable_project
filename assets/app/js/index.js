@@ -1,7 +1,5 @@
 $(document).ready(function () {
 
-    // $('.js-example-basic-single').select2();
-
     $('#game_blueGols').on('input', function (e) {
         if (parseInt($('#game_blueGols').val()) === 7) {
             $("#game_file").show();

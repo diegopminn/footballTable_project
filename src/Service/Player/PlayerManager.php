@@ -2,10 +2,10 @@
 
 namespace App\Service\Player;
 
-use App\Entity\Playerr;
+use App\Entity\Player;
 
-class PlayerManager {
-
+class PlayerManager
+{
     public function getPlayersName ( array $playerss ): array
     {
         $zoosName = [];
@@ -14,5 +14,4 @@ class PlayerManager {
         }
         return $zoosName;
     }
-
 }

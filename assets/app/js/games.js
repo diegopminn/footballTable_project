@@ -1,19 +1,5 @@
 $(document).ready(function () {
 
-    //TODO NO CONSIGO LA DATA DE CADA PARTIDO
-
-    // var date = new Date();
-    // const data_from_database = $(this).find('tr .dateID').getAttribute('data-date');
-    // console.log(data_from_database)
-    // console.log("current date: " + date)
-    //
-    // var FIVE_MIN = 5 * 60 * 1000;
-    // if ((date - new Date(data_from_database)) > FIVE_MIN) {
-    //     $("#edit-btn").hide();
-    // } else {
-    //     $("#edit-btn").show();
-    // }
-
     $(".delete-btn").on("click", function () {
         const id = $(this).data('name');
         Swal.fire({
@@ -72,5 +58,4 @@ $(document).ready(function () {
             return false;
         });
     })
-
 })
